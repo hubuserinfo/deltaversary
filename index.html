@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deltaversary Planner</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #9B1B30;
+    --crimson-deep: #6B1121;
+    --crimson-soft: #F3E3E0;
+    --cream: #F7F1E6;
+    --cream-2: #EFE5D3;
+    --paper: #FFFDF8;
+    --ink: #2B1B1D;
+    --muted: #7C6B66;
+    --line: #E3D7C3;
+    --ok: #3F6B4A;
+    --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-weight: 300; font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  [hidden] { display: none !important; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  a { color: var(--crimson); }
+
+  /* ---------- Login ---------- */
+  #login { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--crimson-deep); background-image: radial-gradient(circle at 50% 0%, var(--crimson) 0%, var(--crimson-deep) 70%); }
+  .login-card { width: 100%; max-width: 420px; background: var(--paper); padding: 48px 36px 40px; text-align: center; border-top: 3px solid var(--crimson); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+  .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--crimson); }
+  .login-card h1 { font-family: var(--serif); font-weight: 500; font-size: 44px; line-height: 1.05; margin: 14px 0 6px; letter-spacing: .01em; }
+  .login-card .sub { font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--muted); margin: 0 0 30px; }
+  .login-card input { width: 100%; padding: 14px 16px; border: 1px solid var(--line); background: var(--cream); text-align: center; letter-spacing: .06em; }
+  .login-card input:focus { outline: none; border-color: var(--crimson); background: var(--paper); }
+  .login-msg { min-height: 22px; margin-top: 12px; font-size: 14px; color: var(--crimson); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--crimson); background: var(--crimson); color: var(--cream); padding: 11px 22px; font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; transition: background .2s, color .2s; }
+  .btn:hover { background: var(--crimson-deep); border-color: var(--crimson-deep); }
+  .btn.ghost { background: transparent; color: var(--crimson); }
+  .btn.ghost:hover { background: var(--crimson); color: var(--cream); }
+  .btn.block { width: 100%; margin-top: 14px; padding: 14px; }
+  .btn:disabled { opacity: .5; cursor: wait; }
+  .link-btn { border: 0; background: none; padding: 4px 2px; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+  .link-btn:hover { color: var(--crimson); }
+  .link-btn.danger:hover { color: #A12A1E; }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--crimson-deep); background-image: radial-gradient(ellipse at 50% -20%, var(--crimson) 0%, var(--crimson-deep) 75%); color: var(--cream); text-align: center; padding: 56px 16px 46px; position: relative; }
+  .hero .eyebrow { color: #E9CFC4; }
+  .hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(42px, 7vw, 74px); line-height: 1; margin: 16px 0 10px; letter-spacing: .01em; }
+  .hero .num { font-family: var(--serif); font-style: italic; font-size: clamp(20px, 3vw, 27px); color: #F2DED6; }
+  .hero .where { margin-top: 18px; font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #EAD3CA; }
+  .hero .count { display: inline-block; margin-top: 22px; padding: 8px 18px; border: 1px solid rgba(247,241,230,.45); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+  .hero-tools { position: absolute; top: 14px; right: 16px; display: flex; gap: 14px; align-items: center; }
+  .hero-tools .link-btn { color: #E5C9BF; }
+  .hero-tools .link-btn:hover { color: var(--cream); }
+  .sync { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9BF; }
+
+  /* ---------- Navigation ---------- */
+  .bar { position: sticky; top: 0; z-index: 20; background: var(--paper); border-bottom: 1px solid var(--line); }
+  .years, .secnav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  .years::-webkit-scrollbar, .secnav::-webkit-scrollbar { display: none; }
+  .years { justify-content: center; border-bottom: 1px solid var(--line); }
+  .years button { flex: none; border: 0; background: none; padding: 14px 14px 12px; font-family: var(--serif); font-size: 19px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; }
+  .years button.on { color: var(--crimson); border-bottom-color: var(--crimson); }
+  .years button.add { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+  .secnav a { flex: none; padding: 11px 12px; font-size: 11px; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .secnav a:hover { color: var(--crimson); }
+
+  /* ---------- Sections ---------- */
+  main { max-width: 1180px; margin: 0 auto; padding: 30px 16px 60px; }
+  .section { background: var(--paper); border: 1px solid var(--line); padding: 40px 44px; margin-bottom: 28px; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+  .sec-head h2 { font-family: var(--serif); font-weight: 500; font-size: 36px; line-height: 1.1; margin: 0; }
+  .sec-intro { color: var(--muted); margin: 0 0 26px; max-width: 64ch; }
+  h3.sub { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--crimson); margin: 34px 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  h3.sub:first-of-type { margin-top: 10px; }
+  .empty { padding: 18px 0; color: var(--muted); font-style: italic; font-family: var(--serif); font-size: 18px; }
+
+  /* Saved rows: quiet text, no form chrome */
+  .rows { border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: var(--cols); gap: 18px; align-items: start; padding: 15px 4px; border-bottom: 1px solid var(--line); }
+  .row.head { padding: 10px 4px; font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .cell { min-width: 0; overflow-wrap: anywhere; }
+  .cell.primary { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.25; }
+  .meta { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+  .meta span + span::before { content: '·'; margin: 0 8px; color: var(--line); }
+  .dash { color: #C9BBAA; }
+  .acts { display: flex; gap: 10px; justify-content: flex-end; white-space: nowrap; }
+  .group-label { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--crimson); padding: 22px 4px 6px; border-bottom: 1px solid var(--line); }
+  .badge { display: inline-block; padding: 3px 10px; font-size: 10.5px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; border: 1px solid var(--line); color: var(--muted); }
+  .badge.good { border-color: var(--crimson); background: var(--crimson); color: var(--cream); }
+  .badge.warm { border-color: var(--crimson); color: var(--crimson); }
+  .badge.dim { color: #AE9E95; border-style: dashed; }
+
+  /* Editing / new entries: a clearly different, framed form */
+  .editor { margin: 12px 0; padding: 22px 22px 18px; background: var(--cream); border: 1px solid var(--line); border-left: 3px solid var(--crimson); }
+  .editor.draft { border-style: dashed; border-left-style: solid; }
+  .editor-label { font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--crimson); margin-bottom: 14px; }
+  .fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px 16px; }
+  .fgrid .full { grid-column: 1 / -1; }
+  .field label { display: block; font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); background: var(--paper); border-radius: 0; font-weight: 400; font-size: 15px; }
+  .field textarea { min-height: 84px; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--crimson); }
+  .ed-acts { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+  .ed-acts .btn { padding: 9px 18px; }
+  .add-row { margin-top: 18px; }
+
+  /* Settings blocks */
+  .kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 28px; }
+  .kv .item { padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .kv .item.full { grid-column: 1 / -1; }
+  .kv .k { font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .kv .v { font-family: var(--serif); font-size: 20px; line-height: 1.3; margin-top: 2px; overflow-wrap: anywhere; }
+  .kv-acts { display: flex; justify-content: flex-end; margin-top: 10px; }
+
+  /* Wish list cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); padding: 20px 20px 14px; background: var(--paper); display: flex; flex-direction: column; }
+  .card h4 { font-family: var(--serif); font-weight: 500; font-size: 23px; margin: 0 0 8px; }
+  .card .k { font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .card p { margin: 2px 0 0; white-space: pre-wrap; }
+  .card .acts { margin-top: auto; padding-top: 12px; }
+  .cards .editor { grid-column: 1 / -1; margin: 0; }
+
+  /* Overview */
+  .overview-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px; }
+  .wx { border: 1px solid var(--line); padding: 20px 22px; background: var(--cream); }
+  .wx h4 { margin: 0 0 12px; font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--crimson); }
+  .wx .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; }
+  .wx .d { text-align: center; padding: 8px 4px; background: var(--paper); border: 1px solid var(--line); }
+  .wx .d b { display: block; font-weight: 500; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .wx .t { font-family: var(--serif); font-size: 22px; }
+  .wx .c { font-size: 12.5px; color: var(--muted); }
+  .wx .note { color: var(--muted); font-size: 14px; }
+  .stats { display: flex; gap: 0; flex-wrap: wrap; margin-top: 26px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat { flex: 1 1 120px; padding: 16px 10px; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat .n { font-family: var(--serif); font-size: 34px; line-height: 1; color: var(--crimson); }
+  .stat .l { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+  .memoriam { margin: 34px auto 6px; padding: 26px 16px 24px; max-width: 520px; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .memoriam .eyebrow { color: var(--muted); }
+  .mem-name { font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--crimson); margin-top: 8px; }
+  .mem-line { font-size: 13px; letter-spacing: .08em; color: var(--muted); margin-top: 4px; }
+  .mem-tag { display: inline-block; margin-left: 10px; font-family: var(--sans); font-style: normal; font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); vertical-align: middle; }
+  .foot-mem { margin-top: 10px; font-family: var(--serif); font-style: italic; font-size: 16px; letter-spacing: 0; text-transform: none; }
+  details.roster { margin-top: 30px; }
+  details.roster summary { cursor: pointer; font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); padding: 10px 0; }
+  details.roster summary:hover { color: var(--crimson); }
+
+  footer { text-align: center; padding: 10px 16px 50px; color: var(--muted); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
+  footer .serif { font-family: var(--serif); font-style: italic; font-size: 18px; letter-spacing: 0; text-transform: none; display: block; margin-bottom: 6px; color: var(--crimson); }
+
+  #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0; background: var(--ink); color: var(--cream); padding: 12px 20px; font-size: 14px; max-width: calc(100% - 32px); transition: all .25s; z-index: 50; pointer-events: none; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .loading { text-align: center; padding: 80px 16px; font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .section { padding: 28px 18px; }
+    .sec-head h2 { font-size: 30px; }
+    .overview-grid { grid-template-columns: 1fr; gap: 24px; }
+    .row { grid-template-columns: 1fr; gap: 4px; padding: 14px 2px; }
+    .row.head { display: none; }
+    .cell[data-label]:not(.primary):not(:empty)::before { content: attr(data-label) ': '; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .acts { justify-content: flex-start; margin-top: 6px; }
+    .hero { padding-top: 60px; }
+    .hero-tools { left: 16px; right: 16px; justify-content: space-between; }
+    .years { justify-content: flex-start; }
+    .stat + .stat { border-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form class="login-card" id="login-form" autocomplete="off">
+    <div class="eyebrow" id="login-eyebrow"></div>
+    <h1>Deltaversary</h1>
+    <p class="sub" id="login-sub"></p>
+    <input type="password" id="pass" placeholder="Passphrase" aria-label="Passphrase" autocomplete="current-password">
+    <button class="btn block" type="submit" id="login-btn">Enter</button>
+    <div class="login-msg" id="login-msg"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="hero" id="hero"></header>
+  <div class="bar">
+    <nav class="years" id="years" aria-label="Year"></nav>
+    <nav class="secnav" id="secnav" aria-label="Sections"></nav>
+  </div>
+  <main id="main"></main>
+  <footer id="footer"></footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   CONFIG — paste your Apps Script Web app URL here
+   ========================================================= */
+const CONFIG = {
+  API_URL: 'PASTE_YOUR_WEB_APP_URL_HERE',
+  LINE_NAME: '4x4 Perfect Timing',
+  CHAPTER: 'Lumberton Alumnae Chapter',
+  LINE_SEASON: 'Spring 2022'
+};
+
+/* ---------------- Field & block definitions ---------------- */
+const DAY_TYPES = ['Activity', 'Dining', 'Service', 'Celebration', 'Travel', 'Free time'];
+const STATUS = ['Idea', 'Planned', 'Booked', 'Done', 'Skipped'];
+const RSVP = ['Attending', 'Maybe', 'Not attending'];
+const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2X', '3X', '4X'];
+const MODES = ['Car', 'Flight', 'Train', 'Bus', 'Riding with a soror', 'Other'];
+
+const BLOCKS = {
+  itinerary: {
+    tab: 'Itinerary', noun: 'event', groupBy: 'Day', sort: ['Day', 'Time'],
+    fields: [
+      { k: 'Day', label: 'Date', type: 'date' },
+      { k: 'Time', label: 'Time', type: 'time' },
+      { k: 'Event', label: 'Event', req: true, full: true },
+      { k: 'Type', label: 'Type', type: 'select', options: DAY_TYPES },
+      { k: 'Status', label: 'Status', type: 'select', options: STATUS },
+      { k: 'Location', label: 'Location / address', full: true },
+      { k: 'Attire', label: 'Attire / colors' },
+      { k: 'Cost', label: 'Cost per person' },
+      { k: 'Notes', label: 'Notes', type: 'textarea', full: true }
+    ],
+    cols: [{ k: 'Time', w: '.75fr' }, { k: 'Event', w: '3fr', primary: true, meta: ['Location', 'Attire', 'Cost', 'Notes'] }, { k: 'Type', w: '1fr' }, { k: 'Status', w: '.9fr', badge: true }]
+  },
+  wishlist: {
+    tab: 'Wishlist', fixed: 'roster', layout: 'cards',
+    fields: [
+      { k: 'Wishes', label: 'Wish list', type: 'textarea', full: true, ph: 'Gift ideas, links, stores…' },
+      { k: 'Favorites', label: 'Favorites & sizes', type: 'textarea', full: true, ph: 'Colors, scents, snacks, sizes…' }
+    ]
+  },
+  service: {
+    tab: 'Service', noun: 'project', sort: ['Date', 'Time'],
+    fields: [
+      { k: 'Project', label: 'Project / organization', req: true, full: true },
+      { k: 'Date', label: 'Date', type: 'date' },
+      { k: 'Time', label: 'Time', type: 'time' },
+      { k: 'Attire', label: 'Attire' },
+      { k: 'Location', label: 'Location', full: true },
+      { k: 'Summary', label: 'Summary', type: 'textarea', full: true }
+    ],
+    cols: [{ k: 'Project', w: '3fr', primary: true, meta: ['Location', 'Attire', 'Summary'] }, { k: 'Date', w: '1fr' }, { k: 'Time', w: '.8fr' }]
+  },
+  signup: {
+    tab: 'Signup', noun: 'item',
+    fields: [
+      { k: 'Item', label: 'Item', req: true, full: true },
+      { k: 'Project', label: 'For which project' },
+      { k: 'Soror', label: 'Soror', type: 'soror' }
+    ],
+    cols: [{ k: 'Item', w: '3fr', primary: true }, { k: 'Project', w: '1.4fr' }, { k: 'Soror', w: '1fr' }]
+  },
+  games: {
+    tab: 'Games', noun: 'game or activity',
+    fields: [
+      { k: 'Name', label: 'Game / activity', req: true, full: true },
+      { k: 'Type', label: 'Type', type: 'select', options: ['Game', 'Music', 'Movie / show', 'Activity', 'Other'] },
+      { k: 'Day', label: 'Date', type: 'date' },
+      { k: 'Soror', label: 'Bringing / hosting', type: 'soror', group: true }
+    ],
+    cols: [{ k: 'Name', w: '2.6fr', primary: true }, { k: 'Type', w: '1fr' }, { k: 'Day', w: '1fr' }, { k: 'Soror', w: '1fr' }]
+  },
+  bring: {
+    tab: 'Bring', noun: 'item',
+    fields: [
+      { k: 'Item', label: 'Item', req: true, full: true },
+      { k: 'Soror', label: 'Who is bringing it', type: 'soror', group: true }
+    ],
+    cols: [{ k: 'Item', w: '3fr', primary: true }, { k: 'Soror', w: '1fr' }]
+  },
+  lodging: {
+    tab: 'LodgingOptions', noun: 'option',
+    fields: [
+      { k: 'Name', label: 'Hotel / rental', req: true, full: true },
+      { k: 'Distance', label: 'Distance' },
+      { k: 'Price', label: 'Price' },
+      { k: 'Link', label: 'Link', type: 'url' },
+      { k: 'Features', label: 'Features', type: 'textarea', full: true }
+    ],
+    cols: [{ k: 'Name', w: '2.6fr', primary: true, meta: ['Features', 'Link'] }, { k: 'Distance', w: '1.2fr' }, { k: 'Price', w: '1fr' }]
+  },
+  rooms: {
+    tab: 'Rooms', noun: 'room',
+    fields: [
+      { k: 'Room', label: 'Room / villa', req: true },
+      { k: 'Sorors', label: 'Who is staying', full: true, ph: 'e.g. Stacey, Gabby, Sonia' }
+    ],
+    cols: [{ k: 'Room', w: '1fr', primary: true }, { k: 'Sorors', w: '3fr' }]
+  },
+  collections: {
+    tab: 'Collections', noun: 'payment',
+    fields: [
+      { k: 'Item', label: 'For', req: true, ph: 'Dinner cruise, scholarship, suite…' },
+      { k: 'Soror', label: 'Soror', type: 'soror' },
+      { k: 'Amount', label: 'Amount', ph: '$0.00' },
+      { k: 'Paid', label: 'Paid?', type: 'select', options: ['No', 'Yes'] }
+    ],
+    cols: [{ k: 'Item', w: '2fr', primary: true }, { k: 'Soror', w: '1fr' }, { k: 'Amount', w: '.8fr' }, { k: 'Paid', w: '.7fr', badge: true }]
+  },
+  attendance: {
+    tab: 'Attendance', fixed: 'roster',
+    fields: [
+      { k: 'Status', label: 'RSVP', type: 'select', options: RSVP },
+      { k: 'ShirtW', label: "T-shirt (women's)", type: 'select', options: SIZES },
+      { k: 'ShirtU', label: 'T-shirt (unisex)', type: 'select', options: SIZES },
+      { k: 'Notes', label: 'Notes', full: true, ph: 'e.g. Arriving Saturday, skipping service day' }
+    ],
+    cols: [{ k: 'Soror', w: '1.3fr', primary: true }, { k: 'Status', w: '1.1fr', badge: true }, { k: 'ShirtW', w: '.9fr', label: "Women's" }, { k: 'ShirtU', w: '.9fr', label: 'Unisex' }, { k: 'Notes', w: '2fr' }]
+  },
+  travel: {
+    tab: 'Attendance', fixed: 'attending',
+    fields: [
+      { k: 'ArriveDay', label: 'Arrival date', type: 'date' },
+      { k: 'ArriveTime', label: 'Arrival time', type: 'time' },
+      { k: 'ArriveMode', label: 'Getting there', type: 'select', options: MODES },
+      { k: 'ArriveDetails', label: 'Flight # / details' },
+      { k: 'DepartDay', label: 'Departure date', type: 'date' },
+      { k: 'DepartTime', label: 'Departure time', type: 'time' },
+      { k: 'DepartMode', label: 'Heading home', type: 'select', options: MODES },
+      { k: 'DepartDetails', label: 'Flight # / details' }
+    ],
+    cols: [
+      { k: 'Soror', w: '1.2fr', primary: true },
+      { k: 'Arrive', w: '2fr', label: 'Arriving', render: r => trip(r.ArriveDay, r.ArriveTime, r.ArriveMode, r.ArriveDetails) },
+      { k: 'Depart', w: '2fr', label: 'Departing', render: r => trip(r.DepartDay, r.DepartTime, r.DepartMode, r.DepartDetails) }
+    ]
+  },
+  feedback: {
+    tab: 'Feedback', noun: 'comment',
+    fields: [
+      { k: 'Comment', label: 'Comment or suggestion', type: 'textarea', req: true, full: true },
+      { k: 'Soror', label: 'From', type: 'soror' }
+    ],
+    cols: [{ k: 'Comment', w: '4fr', primary: true, plain: true }, { k: 'Soror', w: '1fr' }]
+  },
+  roster: {
+    tab: 'Roster', global: true, noun: 'soror', lineSort: true,
+    fields: [
+      { k: 'Name', label: 'Name shown', req: true },
+      { k: 'FullName', label: 'Full name' },
+      { k: 'LineNumber', label: 'Line #' },
+      { k: 'LineName', label: 'Line name' },
+      { k: 'Active', label: 'Status', type: 'select', options: ['Yes', 'No', 'In memory'] },
+      { k: 'MemorialFrom', label: 'Memorial from (year)', ph: 'e.g. 2027' }
+    ],
+    cols: [{ k: 'LineNumber', w: '.4fr', label: '#' }, { k: 'Name', w: '1fr', primary: true }, { k: 'LineName', w: '1.3fr' }, { k: 'FullName', w: '1.6fr' }, { k: 'Active', w: '.8fr', label: 'Active' }]
+  }
+};
+
+const SETTINGS = {
+  overview: [
+    { k: 'Number', label: 'Deltaversary #', ph: '5' },
+    { k: 'City', label: 'City', ph: 'City, State' },
+    { k: 'StartDate', label: 'Starts', type: 'date' },
+    { k: 'EndDate', label: 'Ends', type: 'date' },
+    { k: 'Theme', label: 'Theme', full: true, ph: 'Optional theme or tagline' }
+  ],
+  secret: [
+    { k: 'GiftBudget', label: 'Gift amount', ph: '$30' },
+    { k: 'ExchangeDate', label: 'Exchange date', type: 'date' },
+    { k: 'DrawLink', label: 'Name draw link', type: 'url', full: true, ph: 'drawnames.app link' }
+  ],
+  stay: [
+    { k: 'Lodging', label: 'Where we are staying', full: true },
+    { k: 'Address', label: 'Address', full: true },
+    { k: 'Checkin', label: 'Check-in', ph: 'Time, key pickup, parking' },
+    { k: 'Wifi', label: 'Wi-Fi' }
+  ],
+  memories: [
+    { k: 'AlbumLink', label: 'Shared photo album', type: 'url', full: true },
+    { k: 'Notes', label: 'Notes for the year', type: 'textarea', full: true }
+  ]
+};
+
+const SECTIONS = [
+  { id: 'overview', title: 'The Celebration' },
+  { id: 'coming', title: "Who's Coming" },
+  { id: 'itinerary', title: 'Itinerary' },
+  { id: 'secret', title: 'Secret Soror' },
+  { id: 'service', title: 'Service & Scholarship' },
+  { id: 'games', title: 'Games & Entertainment' },
+  { id: 'bring', title: "What We're Bringing" },
+  { id: 'lodging', title: 'Lodging' },
+  { id: 'collections', title: 'Collections' },
+  { id: 'travel', title: 'Travel' },
+  { id: 'memories', title: 'Memories & Feedback' }
+];
+
+/* ---------------- State ---------------- */
+const state = { key: '', year: '', settings: [], roster: [], data: {}, edits: {}, pending: 0, loaded: false };
+
+/* ---------------- Helpers ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const WD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+function parseDate(s) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; }
+function fmtDate(s, long) {
+  const d = parseDate(s); if (!d) return s || '';
+  return long ? `${WD[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`
+              : `${WD[d.getDay()].slice(0, 3)}, ${MONTHS[d.getMonth()].slice(0, 3)} ${d.getDate()}`;
+}
+function fmtTime(s) {
+  const m = /^(\d{1,2}):(\d{2})/.exec(s || ''); if (!m) return s || '';
+  let h = +m[1]; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${h}:${m[2]} ${ap}`;
+}
+function fmtRange(a, b) {
+  const x = parseDate(a), y = parseDate(b);
+  if (!x) return '';
+  if (!y || +x === +y) return `${MONTHS[x.getMonth()]} ${x.getDate()}, ${x.getFullYear()}`;
+  if (x.getMonth() === y.getMonth()) return `${MONTHS[x.getMonth()]} ${x.getDate()}–${y.getDate()}, ${y.getFullYear()}`;
+  return `${MONTHS[x.getMonth()]} ${x.getDate()} – ${MONTHS[y.getMonth()]} ${y.getDate()}, ${y.getFullYear()}`;
+}
+function ordinal(n) { n = +n; if (!n) return ''; const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function money(s) { const n = parseFloat(String(s || '').replace(/[^0-9.\-]/g, '')); return isNaN(n) ? 0 : n; }
+function trip(day, time, mode, details) {
+  const bits = [fmtDate(day), fmtTime(time)].filter(Boolean).join(' at ');
+  const sub = [mode, details].filter(Boolean).join(' · ');
+  if (!bits && !sub) return '';
+  return `${esc(bits)}${sub ? `<div class="meta">${esc(sub)}</div>` : ''}`;
+}
+function safeUrl(u) { u = String(u || '').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'https://' + u; return /^https?:\/\/[^\s"'<>]+$/i.test(u) ? u : ''; }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 3600); }
+function settingsRow() { return state.settings.find(s => s.Year === state.year) || { id: 'Y' + state.year, Year: state.year }; }
+function activeRoster() { return state.roster.filter(r => r.Active !== 'No' && r.Active !== 'In memory').map(r => r.Name).sort((a, b) => a.localeCompare(b)); }
+// A soror marked In memory is honored only from her MemorialFrom year on (the first Deltaversary without her).
+function remembered(p) { return p.Active === 'In memory' && (!p.MemorialFrom || +state.year >= +p.MemorialFrom); }
+function memorialRoster() { return state.roster.filter(remembered); }
+function sororInfo(name) { return state.roster.find(r => r.Name === name) || {}; }
+function lineNum(name) { const n = parseInt(sororInfo(name).LineNumber, 10); return isNaN(n) ? 999 : n; }
+function lineLabel(p) { return [p.LineNumber ? '#' + p.LineNumber : '', p.LineName].filter(Boolean).join(' · '); }
+function memorialHTML() {
+  const m = memorialRoster(); if (!m.length) return '';
+  return `<div class="memoriam"><div class="eyebrow">In Memory Of</div>${m.map(r => `<div class="mem-name">Soror ${esc(r.FullName || r.Name)}</div>${lineLabel(r) ? `<div class="mem-line">${esc(lineLabel(r))}</div>` : ''}`).join('')}</div>`;
+}
+function tabRows(tab) { return tab === 'Roster' ? state.roster : tab === 'Settings' ? state.settings : (state.data[tab] || []); }
+function setTabRows(tab, rows) { if (tab === 'Roster') state.roster = rows; else if (tab === 'Settings') state.settings = rows; else state.data[tab] = rows; }
+
+/* ---------------- API ---------------- */
+async function api(payload) {
+  const res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(Object.assign({}, payload, { key: state.key })) });
+  if (!res.ok) throw new Error('Network error (' + res.status + ')');
+  const j = await res.json();
+  if (!j.ok) throw new Error(j.error || 'Something went wrong');
+  return j;
+}
+function setSync(text) { const el = $('#sync'); if (el) el.textContent = text; }
+function applyLoad(j) {
+  state.year = j.year; state.settings = j.settings; state.roster = j.roster; state.data = j.data; state.loaded = true;
+  store.set('dv-year', j.year);
+}
+async function loadYear(year, quiet) {
+  if (!quiet) { $('#main').innerHTML = '<div class="loading">Gathering the plans…</div>'; }
+  const j = await api({ action: 'load', year });
+  applyLoad(j); render();
+}
+
+/* ---------------- Login ---------------- */
+function initLogin() {
+  $('#login-eyebrow').textContent = `${CONFIG.CHAPTER} · ${CONFIG.LINE_SEASON}`;
+  $('#login-sub').textContent = CONFIG.LINE_NAME;
+  if (!/^https:\/\//.test(CONFIG.API_URL)) {
+    $('#login-msg').textContent = 'Setup needed: paste the Apps Script Web app URL into CONFIG.API_URL.';
+  }
+  $('#login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const key = $('#pass').value.trim(); if (!key) return;
+    await signIn(key, false);
+  });
+  const saved = store.get('dv-key');
+  if (saved) signIn(saved, true);
+}
+async function signIn(key, silent) {
+  state.key = key;
+  const btn = $('#login-btn'); btn.disabled = true; $('#login-msg').textContent = silent ? 'Welcome back…' : 'Checking…';
+  try {
+    const j = await api({ action: 'load', year: store.get('dv-year') || '' });
+    store.set('dv-key', key);
+    applyLoad(j);
+    $('#login').hidden = true; $('#app').hidden = false;
+    render();
+  } catch (err) {
+    store.del('dv-key');
+    $('#login-msg').textContent = err.message === 'auth' ? 'That passphrase didn’t match. Please try again.' : 'Couldn’t connect: ' + err.message;
+  } finally { btn.disabled = false; }
+}
+function signOut() { store.del('dv-key'); location.reload(); }
+
+/* ---------------- Rendering ---------------- */
+function render() {
+  const s = settingsRow();
+  renderHero(s);
+  renderYears();
+  $('#secnav').innerHTML = SECTIONS.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
+  $('#main').innerHTML = SECTIONS.map(x => sectionHTML(x, s)).join('');
+  const mem = memorialRoster().map(r => 'Soror ' + (r.FullName || r.Name)).join(' · ');
+  $('#footer').innerHTML = `<span class="serif">${esc(CONFIG.LINE_NAME)}</span>${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}`
+    + (mem ? `<div class="foot-mem">In memory of ${esc(mem)}</div>` : '');
+  loadWeather(s);
+}
+
+function renderHero(s) {
+  const num = s.Number ? `The ${ordinal(s.Number)} Deltaversary` : 'Deltaversary';
+  const where = [s.City, fmtRange(s.StartDate, s.EndDate)].filter(Boolean).join(' · ') || 'Destination & dates to be decided';
+  let count = '';
+  const start = parseDate(s.StartDate), end = parseDate(s.EndDate) || start;
+  if (start) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const days = Math.round((start - today) / 864e5);
+    if (days > 1) count = `${days} days to go`;
+    else if (days === 1) count = 'Tomorrow';
+    else if (today <= end) count = 'Celebrating now';
+    else count = 'Celebrated';
+  }
+  $('#hero').innerHTML = `
+    <div class="hero-tools"><span class="sync" id="sync"></span><span>
+      <button class="link-btn" data-act="refresh">Refresh</button>
+      <button class="link-btn" data-act="signout">Sign out</button></span></div>
+    <div class="eyebrow">${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}</div>
+    <h1>${esc(CONFIG.LINE_NAME)}</h1>
+    <div class="num">${esc(num)}${s.Theme ? ` — ${esc(s.Theme)}` : ''}</div>
+    <div class="where">${esc(where)}</div>
+    ${count ? `<div class="count">${esc(count)}</div>` : ''}`;
+}
+
+function renderYears() {
+  const years = state.settings.map(s => s.Year).sort();
+  const next = years.length ? +years[years.length - 1] + 1 : new Date().getFullYear();
+  $('#years').innerHTML = years.map(y => `<button class="${y === state.year ? 'on' : ''}" data-act="year" data-year="${esc(y)}">${esc(y)}</button>`).join('')
+    + `<button class="add" data-act="newyear" data-year="${next}">+ Plan ${next}</button>`;
+}
+
+function sectionHTML(sec, s) {
+  const head = (intro) => `<div class="sec-head"><h2>${esc(sec.title)}</h2></div>${intro ? `<p class="sec-intro">${intro}</p>` : ''}`;
+  let body = '';
+  switch (sec.id) {
+    case 'overview': {
+      const att = (state.data.Attendance || []).filter(r => r.Status === 'Attending').length;
+      const maybe = (state.data.Attendance || []).filter(r => r.Status === 'Maybe').length;
+      const events = (state.data.Itinerary || []).length;
+      const booked = (state.data.Itinerary || []).filter(r => r.Status === 'Booked' || r.Status === 'Done').length;
+      body = head('The essentials for this year’s celebration. Everyone with the passphrase sees the same plan, so changes show up for the whole line.')
+        + `<div class="overview-grid"><div>${settingsBlock('overview', s)}</div><div class="wx" id="wx"><h4>Weather</h4><div class="note">Add a city and dates to see the forecast.</div></div></div>
+           <div class="stats">
+             <div class="stat"><div class="n">${att}</div><div class="l">Attending</div></div>
+             <div class="stat"><div class="n">${maybe}</div><div class="l">Maybe</div></div>
+             <div class="stat"><div class="n">${events}</div><div class="l">On the itinerary</div></div>
+             <div class="stat"><div class="n">${booked}</div><div class="l">Booked or done</div></div>
+           </div>`;
+      break;
+    }
+    case 'coming':
+      body = head('RSVPs and T-shirt sizes for everyone on the line. Each soror can update her own row.')
+        + listBlock('attendance')
+        + memorialHTML()
+        + `<details class="roster"${state.edits && Object.keys(state.edits).some(k => k.startsWith('roster:')) ? ' open' : ''}><summary>Line roster (${state.roster.length})</summary>${listBlock('roster')}</details>`;
+      break;
+    case 'itinerary':
+      body = head('Everything on the schedule, by day. Mark each event as booked, done or skipped, since we don’t always get to everything.') + listBlock('itinerary');
+      break;
+    case 'secret':
+      body = head('Our standing tradition. Draw names, then fill in your wish list so your Secret Soror has time to shop.')
+        + settingsBlock('secret', s) + `<h3 class="sub">Wish lists</h3>` + listBlock('wishlist');
+      break;
+    case 'service':
+      body = head('Public service and scholarship projects for this Deltaversary, plus the donation sign-up.')
+        + `<h3 class="sub">Projects</h3>` + listBlock('service') + `<h3 class="sub">Donation sign-up</h3>` + listBlock('signup');
+      break;
+    case 'games':
+      body = head('Games, music, movies and anything else for the fun nights, and who is bringing or hosting it.') + listBlock('games');
+      break;
+    case 'bring':
+      body = head('Shared items for the group and who is bringing each one.') + listBlock('bring');
+      break;
+    case 'lodging':
+      body = head('Where we are staying, the options we compared, and who is in which room.')
+        + `<h3 class="sub">Our stay</h3>` + settingsBlock('stay', s)
+        + `<h3 class="sub">Options considered</h3>` + listBlock('lodging')
+        + `<h3 class="sub">Room assignments</h3>` + listBlock('rooms');
+      break;
+    case 'collections': {
+      const rows = state.data.Collections || [];
+      const total = rows.reduce((a, r) => a + money(r.Amount), 0);
+      const paid = rows.filter(r => r.Paid === 'Yes').reduce((a, r) => a + money(r.Amount), 0);
+      const f = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      body = head('Dues and shared costs: what each soror owes and whether it has been paid.')
+        + (rows.length ? `<div class="stats" style="margin:0 0 22px"><div class="stat"><div class="n">${f(total)}</div><div class="l">Total</div></div><div class="stat"><div class="n">${f(paid)}</div><div class="l">Collected</div></div><div class="stat"><div class="n">${f(total - paid)}</div><div class="l">Outstanding</div></div></div>` : '')
+        + listBlock('collections');
+      break;
+    }
+    case 'travel':
+      body = head('Arrivals and departures for everyone marked Attending or Maybe, so we can coordinate rides and pickups.') + listBlock('travel');
+      break;
+    case 'memories':
+      body = head('Photos from the weekend, and comments to bring to the next meeting so the next Deltaversary is even better.')
+        + settingsBlock('memories', s) + `<h3 class="sub">Comments for the next meeting</h3>` + listBlock('feedback');
+      break;
+  }
+  return `<section class="section" id="${sec.id}">${body}</section>`;
+}
+
+/* ----- Settings blocks (key/value cards) ----- */
+function settingsBlock(name, s) {
+  const fields = SETTINGS[name];
+  const ek = `set-${name}:${s.id}`;
+  if (state.edits[ek]) return editorHTML(ek, fields, state.edits[ek], 'Edit details', false);
+  const items = fields.map(f => {
+    let v = s[f.k];
+    if (f.type === 'date') v = fmtDate(v, true);
+    const shown = !v ? '<span class="dash">—</span>'
+      : f.type === 'url' ? (safeUrl(v) ? `<a href="${esc(safeUrl(v))}" target="_blank" rel="noopener">Open link ↗</a>` : esc(v))
+      : esc(v).replace(/\n/g, '<br>');
+    return `<div class="item${f.full ? ' full' : ''}"><div class="k">${esc(f.label)}</div><div class="v">${shown}</div></div>`;
+  }).join('');
+  return `<div class="kv">${items}</div><div class="kv-acts"><button class="link-btn" data-act="edit-set" data-b="${name}">Edit</button></div>`;
+}
+
+/* ----- Lists ----- */
+function blockRows(name) {
+  const b = BLOCKS[name];
+  let rows = tabRows(b.tab).slice();
+  if (b.fixed) {
+    const names = activeRoster();
+    const byName = {}; rows.forEach(r => { byName[r.Soror] = r; });
+    let list = names.map(n => byName[n] || { id: `${state.year}-${n}`, Year: state.year, Soror: n });
+    // Sorors no longer active keep their past entries, shown read-only; no empty space is held for them.
+    state.roster.filter(p => p.Active === 'No' || p.Active === 'In memory').forEach(p => {
+      const r = byName[p.Name];
+      if (r && b.fields.some(f => r[f.k])) list.push(Object.assign({}, r, { __ro: true, __mem: remembered(p) }));
+    });
+    list.sort((a, c) => (lineNum(a.Soror) - lineNum(c.Soror)) || a.Soror.localeCompare(c.Soror));
+    list = list.map(r => Object.assign({}, r, { __line: lineLabel(sororInfo(r.Soror)) }));
+    if (b.fixed === 'attending') list = list.filter(r => r.Status === 'Attending' || r.Status === 'Maybe');
+    return list;
+  }
+  if (b.lineSort) rows.sort((a, c) => ((parseInt(a.LineNumber, 10) || 999) - (parseInt(c.LineNumber, 10) || 999)) || a.Name.localeCompare(c.Name));
+  if (b.sort) rows.sort((a, c) => { for (const k of b.sort) { const x = a[k] || '￿', y = c[k] || '￿'; if (x !== y) return x < y ? -1 : 1; } return 0; });
+  return rows;
+}
+
+function listBlock(name) {
+  const b = BLOCKS[name];
+  const rows = blockRows(name);
+  const drafts = Object.keys(state.edits).filter(k => k.startsWith(name + ':') && state.edits[k].__new);
+  let html = '';
+
+  if (b.layout === 'cards') {
+    if (!rows.length) html += `<div class="empty">Add sorors to the line roster to start wish lists.</div>`;
+    html += `<div class="cards">` + rows.map(r => {
+      const ek = `${name}:${r.id}`;
+      if (state.edits[ek]) return editorHTML(ek, b.fields, state.edits[ek], `${r.Soror}’s wish list`, false);
+      const has = r.Wishes || r.Favorites;
+      return `<div class="card"><h4>${esc(r.Soror)}${r.__mem ? '<span class="mem-tag">In memory</span>' : ''}</h4>
+        ${r.__line ? `<div class="meta" style="margin:-6px 0 8px">${esc(r.__line)}</div>` : ''}
+        ${has ? '' : '<p class="dash" style="font-style:italic">No wish list yet</p>'}
+        ${r.Wishes ? `<div class="k">Wish list</div><p>${linkify(r.Wishes)}</p>` : ''}
+        ${r.Favorites ? `<div class="k">Favorites & sizes</div><p>${esc(r.Favorites)}</p>` : ''}
+        ${r.__ro ? '' : `<div class="acts"><button class="link-btn" data-act="edit" data-b="${name}" data-id="${esc(r.id)}">${has ? 'Edit' : 'Add wish list'}</button></div>`}</div>`;
+    }).join('') + `</div>`;
+    return html;
+  }
+
+  const cols = b.cols;
+  const tmpl = cols.map(c => c.w).join(' ') + ' auto';
+  if (!rows.length && !drafts.length) {
+    html += `<div class="empty">${b.fixed === 'attending' ? 'No one is marked Attending or Maybe yet. Update RSVPs in Who’s Coming.' : 'Nothing here yet.'}</div>`;
+  } else if (rows.length) {
+    html += `<div class="rows" style="--cols:${tmpl}"><div class="row head">${cols.map(c => `<div>${esc(c.label || labelOf(b, c.k))}</div>`).join('')}<div></div></div>`;
+    let lastGroup = null;
+    rows.forEach(r => {
+      if (b.groupBy) {
+        const g = r[b.groupBy] || '';
+        if (g !== lastGroup) { html += `<div class="group-label">${g ? esc(fmtDate(g, true)) : 'Date to be decided'}</div>`; lastGroup = g; }
+      }
+      const ek = `${name}:${r.id}`;
+      if (state.edits[ek]) { html += editorHTML(ek, b.fields, state.edits[ek], b.fixed ? r.Soror : `Edit ${b.noun}`, false); return; }
+      html += rowHTML(name, b, r);
+    });
+    html += `</div>`;
+  }
+  drafts.forEach(ek => { html += editorHTML(ek, b.fields, state.edits[ek], `New ${b.noun}`, true); });
+  if (!b.fixed) html += `<div class="add-row"><button class="btn ghost" data-act="add" data-b="${name}">+ Add ${esc(b.noun)}</button></div>`;
+  return html;
+}
+
+function labelOf(b, k) { const f = b.fields.find(x => x.k === k); return f ? f.label : k; }
+
+function cellValue(b, c, r) {
+  if (c.render) return c.render(r);
+  const f = b.fields.find(x => x.k === c.k) || {};
+  let v = r[c.k];
+  if (!v) return '';
+  if (f.type === 'date') return esc(fmtDate(v));
+  if (f.type === 'time') return esc(fmtTime(v));
+  if (c.badge) {
+    const cls = ['Attending', 'Booked', 'Done', 'Yes'].includes(v) ? 'good' : ['Maybe', 'Planned'].includes(v) ? 'warm' : ['Skipped', 'Not attending', 'No', 'Idea'].includes(v) ? 'dim' : '';
+    return `<span class="badge ${cls}">${esc(v)}</span>`;
+  }
+  return c.plain ? esc(v).replace(/\n/g, '<br>') : esc(v);
+}
+
+function rowHTML(name, b, r) {
+  const cells = b.cols.map(c => {
+    let inner = cellValue(b, c, r);
+    if (c.primary) {
+      if (!inner) inner = '<span class="dash">—</span>';
+      if (c.meta) {
+        const m = c.meta.map(k => {
+          const f = b.fields.find(x => x.k === k) || {};
+          if (!r[k]) return '';
+          if (f.type === 'url') { const u = safeUrl(r[k]); return u ? `<span><a href="${esc(u)}" target="_blank" rel="noopener">Link ↗</a></span>` : ''; }
+          return `<span>${esc(r[k])}</span>`;
+        }).filter(Boolean).join('');
+        if (m) inner += `<div class="meta">${m}</div>`;
+      }
+      if (r.__mem) inner += '<span class="mem-tag">In memory</span>';
+      if (r.__line) inner += `<div class="meta">${esc(r.__line)}</div>`;
+      return `<div class="cell primary">${inner}</div>`;
+    }
+    return `<div class="cell" data-label="${esc(c.label || labelOf(b, c.k))}">${inner}</div>`;
+  }).join('');
+  if (r.__ro) return `<div class="row">${cells}<div class="acts"></div></div>`;
+  const isEmptyFixed = b.fixed && !b.fields.some(f => r[f.k]);
+  const acts = `<button class="link-btn" data-act="edit" data-b="${name}" data-id="${esc(r.id)}">${isEmptyFixed ? 'Fill in' : 'Edit'}</button>`
+    + (b.fixed ? '' : `<button class="link-btn danger" data-act="del" data-b="${name}" data-id="${esc(r.id)}">Remove</button>`);
+  return `<div class="row">${cells}<div class="acts">${acts}</div></div>`;
+}
+
+function linkify(text) {
+  return esc(text).replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u.length > 42 ? u.slice(0, 40) + '…' : u}</a>`);
+}
+
+/* ----- Editor form (used for new entries and edits) ----- */
+function editorHTML(ek, fields, vals, title, isDraft) {
+  const roster = activeRoster();
+  const input = f => {
+    const v = vals[f.k] == null ? '' : vals[f.k];
+    const a = `data-ek="${esc(ek)}" data-k="${f.k}" id="${esc(ek + '-' + f.k)}"`;
+    if (f.type === 'textarea') return `<textarea ${a} placeholder="${esc(f.ph || '')}">${esc(v)}</textarea>`;
+    if (f.type === 'select' || f.type === 'soror') {
+      let opts = f.type === 'soror' ? roster.concat(f.group ? ['Group'] : []) : f.options;
+      if (v && !opts.includes(v)) opts = opts.concat([v]);
+      return `<select ${a}><option value="">${f.type === 'soror' ? 'Choose a soror' : 'Choose…'}</option>${opts.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+    }
+    const t = f.type === 'date' ? 'date' : f.type === 'time' ? 'time' : f.type === 'url' ? 'url' : 'text';
+    return `<input type="${t}" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}">`;
+  };
+  return `<div class="editor${isDraft ? ' draft' : ''}">
+    <div class="editor-label">${esc(title)}</div>
+    <div class="fgrid">${fields.map(f => `<div class="field${f.full ? ' full' : ''}"><label for="${esc(ek + '-' + f.k)}">${esc(f.label)}${f.req ? ' *' : ''}</label>${input(f)}</div>`).join('')}</div>
+    <div class="ed-acts"><button class="link-btn" data-act="cancel" data-ek="${esc(ek)}">Cancel</button><button class="btn" data-act="save" data-ek="${esc(ek)}">${isDraft ? 'Add' : 'Save'}</button></div>
+  </div>`;
+}
+
+/* ---------------- Actions ---------------- */
+function startEdit(name, id) {
+  const b = BLOCKS[name];
+  const r = blockRows(name).find(x => x.id === id) || {};
+  const vals = {}; b.fields.forEach(f => { vals[f.k] = r[f.k] || ''; });
+  state.edits[`${name}:${id}`] = vals;
+  render(); focusEditor(`${name}:${id}`);
+}
+function startAdd(name) {
+  const b = BLOCKS[name]; const id = uid();
+  const vals = { __new: true }; b.fields.forEach(f => { vals[f.k] = ''; });
+  if (name === 'collections') vals.Paid = 'No';
+  if (name === 'itinerary') vals.Status = 'Idea';
+  if (name === 'roster') vals.Active = 'Yes';
+  state.edits[`${name}:${id}`] = vals;
+  render(); focusEditor(`${name}:${id}`);
+}
+function startEditSettings(name) {
+  const s = settingsRow(); const vals = {};
+  SETTINGS[name].forEach(f => { vals[f.k] = s[f.k] || ''; });
+  state.edits[`set-${name}:${s.id}`] = vals;
+  render(); focusEditor(`set-${name}:${s.id}`);
+}
+function focusEditor(ek) {
+  const el = document.querySelector(`[data-ek="${CSS.escape(ek)}"][data-k]`);
+  if (el) { el.closest('.editor').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); el.focus({ preventScroll: true }); }
+}
+function cancelEdit(ek) { delete state.edits[ek]; render(); }
+
+async function save(ek) {
+  const [name, id] = splitKey(ek);
+  const vals = Object.assign({}, state.edits[ek]); delete vals.__new;
+  let tab, fields, base;
+  if (name.startsWith('set-')) {
+    tab = 'Settings'; fields = SETTINGS[name.slice(4)]; base = settingsRow();
+  } else {
+    const b = BLOCKS[name]; tab = b.tab; fields = b.fields;
+    base = tabRows(tab).find(r => r.id === id) || (b.fixed ? blockRows(name).find(r => r.id === id) : {}) || {};
+    const miss = fields.find(f => f.req && !String(vals[f.k] || '').trim());
+    if (miss) { toast(`Please fill in “${miss.label}”.`); focusEditor(ek); return; }
+  }
+  const row = Object.assign({}, base, vals, { id });
+  Object.keys(row).forEach(k => { if (k.startsWith('__')) delete row[k]; });
+  if (!(name === 'roster')) row.Year = state.year;
+  if (name === 'roster' && !row.Active) row.Active = 'Yes';
+  const before = tabRows(tab).slice();
+  const i = before.findIndex(r => r.id === id);
+  const next = before.slice(); if (i >= 0) next[i] = row; else next.push(row);
+  setTabRows(tab, next);
+  const pendingEdit = state.edits[ek]; delete state.edits[ek];
+  render();
+  try {
+    state.pending++; setSync('Saving…');
+    await api({ action: 'upsert', tab, row });
+    state.pending--; setSync(state.pending ? 'Saving…' : 'Saved');
+  } catch (err) {
+    state.pending--; setSync('');
+    setTabRows(tab, before); state.edits[ek] = pendingEdit; render();
+    handleErr(err, 'Couldn’t save');
+  }
+}
+
+async function remove(name, id) {
+  const b = BLOCKS[name];
+  const r = tabRows(b.tab).find(x => x.id === id);
+  const label = r ? (r[b.cols[0].k] || '') : '';
+  if (!confirm(`Remove ${label ? '“' + String(label).slice(0, 60) + '”' : 'this ' + b.noun}?`)) return;
+  const before = tabRows(b.tab).slice();
+  setTabRows(b.tab, before.filter(x => x.id !== id)); render();
+  try { setSync('Saving…'); await api({ action: 'delete', tab: b.tab, id }); setSync('Saved'); }
+  catch (err) { setTabRows(b.tab, before); render(); handleErr(err, 'Couldn’t remove'); }
+}
+
+function splitKey(ek) { const i = ek.indexOf(':'); return [ek.slice(0, i), ek.slice(i + 1)]; }
+function handleErr(err, prefix) {
+  if (err.message === 'auth') { toast('The passphrase has changed. Please sign in again.'); setTimeout(signOut, 1800); return; }
+  toast(`${prefix}: ${err.message}`);
+}
+function hasUnsaved() { return Object.keys(state.edits).length > 0; }
+
+async function switchYear(y) {
+  if (hasUnsaved() && !confirm('You have unsaved changes. Switch years anyway?')) return;
+  state.edits = {};
+  try { await loadYear(y); window.scrollTo({ top: 0 }); } catch (err) { handleErr(err, 'Couldn’t load ' + y); }
+}
+async function newYear(y) {
+  if (!confirm(`Start planning Deltaversary ${y}? Secret Soror, games night, the RCC scholarship and a service project will be added as starting points.`)) return;
+  state.edits = {};
+  $('#main').innerHTML = '<div class="loading">Setting up ' + esc(y) + '…</div>';
+  try { const j = await api({ action: 'newYear', year: y }); applyLoad(j); render(); }
+  catch (err) { handleErr(err, 'Couldn’t start ' + y); render(); }
+}
+async function refresh(quiet) {
+  if (hasUnsaved()) { if (!quiet) toast('Save or cancel your open edits first.'); return; }
+  try { setSync('Refreshing…'); await loadYear(state.year, true); setSync('Up to date'); }
+  catch (err) { setSync(''); if (!quiet) handleErr(err, 'Couldn’t refresh'); }
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]'); if (!t) return;
+  const act = t.dataset.act;
+  if (act === 'edit') startEdit(t.dataset.b, t.dataset.id);
+  else if (act === 'add') startAdd(t.dataset.b);
+  else if (act === 'edit-set') startEditSettings(t.dataset.b);
+  else if (act === 'cancel') cancelEdit(t.dataset.ek);
+  else if (act === 'save') save(t.dataset.ek);
+  else if (act === 'del') remove(t.dataset.b, t.dataset.id);
+  else if (act === 'year') switchYear(t.dataset.year);
+  else if (act === 'newyear') newYear(t.dataset.year);
+  else if (act === 'refresh') refresh(false);
+  else if (act === 'signout') signOut();
+});
+function onField(e) {
+  const t = e.target; if (!t.dataset || !t.dataset.ek || !t.dataset.k) return;
+  if (state.edits[t.dataset.ek]) state.edits[t.dataset.ek][t.dataset.k] = t.value;
+}
+document.addEventListener('input', onField);
+document.addEventListener('change', onField);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.matches('.editor input')) { e.preventDefault(); save(e.target.dataset.ek); }
+  if (e.key === 'Escape' && e.target.closest('.editor')) { cancelEdit(e.target.dataset.ek); }
+});
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && state.loaded) refresh(true); });
+window.addEventListener('beforeunload', e => { if (hasUnsaved() || state.pending) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------------- Weather (Open-Meteo, free, no key) ---------------- */
+const WX = { 0: 'Clear', 1: 'Mostly clear', 2: 'Partly cloudy', 3: 'Cloudy', 45: 'Fog', 48: 'Fog', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Light rain', 63: 'Rain', 65: 'Heavy rain', 71: 'Snow', 73: 'Snow', 75: 'Snow', 80: 'Showers', 81: 'Showers', 82: 'Heavy showers', 95: 'Thunderstorms', 96: 'Storms', 99: 'Storms' };
+const wxCache = {};
+async function loadWeather(s) {
+  const box = $('#wx'); if (!box) return;
+  const start = parseDate(s.StartDate), end = parseDate(s.EndDate) || start;
+  if (!s.City || !start) return;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const until = Math.round((start - today) / 864e5);
+  if (end < today) { box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">This celebration has passed.</div>`; return; }
+  if (until > 15) { box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">The forecast appears here about two weeks before the trip — check back in ${until - 15} days.</div>`; return; }
+  const key = s.City + s.StartDate + s.EndDate;
+  try {
+    if (!wxCache[key]) {
+      const city = s.City.split(',')[0].trim();
+      const g = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=en&countryCode=US`)).json();
+      const st = (s.City.split(',')[1] || '').trim().toUpperCase();
+      const place = (g.results || []).find(p => !st || (p.admin1 || '').toUpperCase().startsWith(st) || abbr(p.admin1) === st) || (g.results || [])[0];
+      if (!place) throw new Error('City not found');
+      const from = start < today ? today : start;
+      const iso = d => d.toISOString().slice(0, 10);
+      const lastDay = new Date(today); lastDay.setDate(lastDay.getDate() + 15);
+      const to = end > lastDay ? lastDay : end;
+      const w = await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&start_date=${iso(from)}&end_date=${iso(to)}`)).json();
+      wxCache[key] = w.daily;
+    }
+    const d = wxCache[key];
+    box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="days">${d.time.map((t, i) => `<div class="d"><b>${esc(fmtDate(t).split(',')[0])}</b><div class="t">${Math.round(d.temperature_2m_max[i])}°</div><div class="c">${Math.round(d.temperature_2m_min[i])}° low</div><div class="c">${esc(WX[d.weather_code[i]] || '')}${d.precipitation_probability_max[i] != null ? ` · ${d.precipitation_probability_max[i]}% rain` : ''}</div></div>`).join('')}</div>`;
+  } catch (e) {
+    box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">Forecast unavailable right now.</div>`;
+  }
+}
+const STATES = { 'NORTH CAROLINA': 'NC', 'SOUTH CAROLINA': 'SC', 'VIRGINIA': 'VA', 'GEORGIA': 'GA', 'FLORIDA': 'FL', 'MARYLAND': 'MD', 'DISTRICT OF COLUMBIA': 'DC', 'TENNESSEE': 'TN', 'ALABAMA': 'AL', 'NEW YORK': 'NY', 'TEXAS': 'TX', 'LOUISIANA': 'LA', 'PENNSYLVANIA': 'PA', 'NEW JERSEY': 'NJ', 'ILLINOIS': 'IL', 'CALIFORNIA': 'CA', 'NEVADA': 'NV', 'ARIZONA': 'AZ', 'MISSISSIPPI': 'MS', 'KENTUCKY': 'KY', 'OHIO': 'OH', 'MICHIGAN': 'MI', 'DELAWARE': 'DE', 'WEST VIRGINIA': 'WV' };
+function abbr(name) { return STATES[(name || '').toUpperCase()] || ''; }
+
+initLogin();
+</script>
+</body>
+</html>
