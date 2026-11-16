@@ -789,9 +789,9 @@ function achievementsHTML() {
   const sorors = state.roster.slice().sort((a, c) => lineNum(a.Name) - lineNum(c.Name));
   const opt = (v, label, cur) => `<option value="${esc(v)}"${v === cur ? ' selected' : ''}>${esc(label)}</option>`;
   const controls = `<div class="ach-filters">
-    <label>Show <select data-filter="range">${opt('since', since ? 'Since our last Deltaversary' : 'All years', f.range)}${since ? opt('all', 'All years', f.range) : ''}</select></label>
-    <label>Kind <select data-filter="cat">${opt('', 'Delta & personal', f.cat)}${opt('Delta', 'Delta', f.cat)}${opt('Personal', 'Personal', f.cat)}</select></label>
-    <label>Soror <select data-filter="soror">${opt('', 'Whole line', f.soror)}${sorors.map(p => opt(p.Name, p.Name, f.soror)).join('')}</select></label>
+    <label>Show <select data-filter="range">${opt('since', since ? 'Since our last Deltaversary' : 'All Years', f.range)}${since ? opt('all', 'All years', f.range) : ''}</select></label>
+    <label>Kind <select data-filter="cat">${opt('', 'Delta & Personal', f.cat)}${opt('Delta', 'Delta', f.cat)}${opt('Personal', 'Personal', f.cat)}</select></label>
+    <label>Soror <select data-filter="soror">${opt('', 'Whole Line', f.soror)}${sorors.map(p => opt(p.Name, p.Name, f.soror)).join('')}</select></label>
   </div>`;
   let profile = '';
   if (f.soror) {
