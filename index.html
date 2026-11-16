@@ -72,6 +72,7 @@
   .hero-tools .link-btn { color: #E5C9BF; }
   .hero-tools .link-btn:hover { color: var(--cream); }
   .sync { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9BF; }
+  .sync:not(:empty) { margin-right: 16px; }
 
   /* ---------- Navigation ---------- */
   .bar { position: sticky; top: 0; z-index: 20; background: var(--paper); border-bottom: 1px solid var(--line); }
@@ -168,12 +169,14 @@
   .overview-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px; }
   .wx { border: 1px solid var(--line); padding: 20px 22px; background: var(--cream); align-self: start; }
   .wx h4 { margin: 0 0 12px; font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--crimson); }
-  .wx .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; }
+  .wx .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(58px, 1fr)); gap: 8px; }
   .wx .d { text-align: center; padding: 8px 4px; background: var(--paper); border: 1px solid var(--line); }
-  .wx .d b { display: block; font-weight: 500; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .wx .d b { display: block; font-weight: 500; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
   .wx .t { font-family: var(--serif); font-size: 22px; }
-  .wx .c { font-size: 12.5px; color: var(--muted); }
+  .wx .c { font-size: 12px; line-height: 1.35; color: var(--muted); }
   .wx .note { color: var(--muted); font-size: 14px; }
+  .wx-sub { font-size: 13px; color: var(--muted); margin: -6px 0 12px; }
+  .wx-rec { margin-top: 12px; font-size: 13px; }
   .stats { display: flex; gap: 0; flex-wrap: wrap; margin-top: 26px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .stat { flex: 1 1 120px; padding: 16px 10px; text-align: center; }
   .stat + .stat { border-left: 1px solid var(--line); }
@@ -240,10 +243,10 @@
 
   /* Banner */
   .hero.has-banner { padding: 0 0 26px; background: var(--crimson-deep); }
-  .hero-banner { width: 100%; max-height: 520px; overflow: hidden; background: #2a0c12; }
-  .hero-banner img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: cover; object-position: center; }
+  .hero-banner { width: 100%; display: flex; justify-content: center; background: var(--crimson-deep); }
+  .hero-banner img { display: block; width: 100%; max-width: 1600px; height: auto; }
   .hero-info { padding: 20px 16px 0; }
-  .hero.has-banner .hero-tools { z-index: 2; background: rgba(43, 10, 16, .55); padding: 6px 10px; }
+  .hero.has-banner .hero-tools { position: static; display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; padding: 10px 20px; background: var(--crimson-deep); border-bottom: 1px solid rgba(247, 241, 230, .12); }
 
   /* Requests */
   .req-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--muted); }
@@ -1386,33 +1389,83 @@ window.addEventListener('beforeunload', e => { if (hasUnsaved() || state.pending
 /* ---------------- Weather (Open-Meteo, free, no key) ---------------- */
 const WX = { 0: 'Clear', 1: 'Mostly clear', 2: 'Partly cloudy', 3: 'Cloudy', 45: 'Fog', 48: 'Fog', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Light rain', 63: 'Rain', 65: 'Heavy rain', 71: 'Snow', 73: 'Snow', 75: 'Snow', 80: 'Showers', 81: 'Showers', 82: 'Heavy showers', 95: 'Thunderstorms', 96: 'Storms', 99: 'Storms' };
 const wxCache = {};
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+async function findPlace(cityText) {
+  const k = 'geo:' + cityText;
+  if (wxCache[k]) return wxCache[k];
+  const city = cityText.split(',')[0].split('&')[0].trim();
+  const g = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=en&countryCode=US`)).json();
+  const st = (cityText.split(',')[1] || '').trim().toUpperCase();
+  const place = (g.results || []).find(p => !st || (p.admin1 || '').toUpperCase().startsWith(st) || abbr(p.admin1) === st) || (g.results || [])[0];
+  if (!place) throw new Error('City not found');
+  return (wxCache[k] = place);
+}
+function tripDays(start, end) {
+  const days = []; const d = new Date(start);
+  while (d <= end && days.length < 10) { days.push(new Date(d)); d.setDate(d.getDate() + 1); }
+  return days;
+}
+
+// Typical weather for the trip dates, from the past 10 full years of recorded weather.
+async function climate(place, start, end) {
+  const days = tripDays(start, end);
+  const lastYear = new Date().getFullYear() - 1, firstYear = lastYear - 9;
+  const shift = (d, y) => { const x = new Date(y + (d.getFullYear() - start.getFullYear()), d.getMonth(), d.getDate()); return x.getMonth() === d.getMonth() ? x : null; };
+  const from = shift(days[0], firstYear), to = shift(days[days.length - 1], lastYear) || new Date(lastYear, 11, 31);
+  const w = await (await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${place.latitude}&longitude=${place.longitude}&start_date=${iso(from)}&end_date=${iso(to)}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit=fahrenheit&precipitation_unit=inch&timezone=auto`)).json();
+  if (!w.daily) throw new Error('No history');
+  const at = {}; w.daily.time.forEach((t, i) => { at[t] = i; });
+  const D = w.daily;
+  let recHi = null, recLo = null;
+  const perDay = days.map(day => {
+    const hi = [], lo = [], wet = [];
+    for (let y = firstYear; y <= lastYear; y++) {
+      const x = shift(day, y); const i = x ? at[iso(x)] : undefined;
+      if (i == null || D.temperature_2m_max[i] == null) continue;
+      hi.push(D.temperature_2m_max[i]); lo.push(D.temperature_2m_min[i]); wet.push((D.precipitation_sum[i] || 0) >= 0.01);
+      if (!recHi || D.temperature_2m_max[i] > recHi.t) recHi = { t: D.temperature_2m_max[i], y: x.getFullYear() };
+      if (!recLo || D.temperature_2m_min[i] < recLo.t) recLo = { t: D.temperature_2m_min[i], y: x.getFullYear() };
+    }
+    const avg = a => a.length ? Math.round(a.reduce((p, c) => p + c, 0) / a.length) : null;
+    return { day, hi: avg(hi), lo: avg(lo), wet: wet.filter(Boolean).length, years: wet.length };
+  });
+  return { perDay, recHi, recLo, firstYear, lastYear };
+}
+
 async function loadWeather(s) {
   const box = $('#wx'); if (!box) return;
   const start = parseDate(s.StartDate), end = parseDate(s.EndDate) || start;
   if (!s.City || !start) return;
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const until = Math.round((start - today) / 864e5);
-  if (end < today) { box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">This celebration has passed.</div>`; return; }
-  if (until > 15) { box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">The forecast appears here about two weeks before the trip — check back in ${until - 15} days.</div>`; return; }
-  const key = s.City + s.StartDate + s.EndDate;
+  const title = `<h4>Weather · ${esc(s.City)}</h4>`;
+  if (end < today) { box.innerHTML = `${title}<div class="note">This celebration has passed.</div>`; return; }
+  const key = (until > 15 ? 'clim:' : 'fc:') + s.City + s.StartDate + s.EndDate;
   try {
+    const place = await findPlace(s.City);
+    if (until > 15) {
+      if (!wxCache[key]) wxCache[key] = await climate(place, start, end);
+      const c = wxCache[key];
+      const range = fmtRange(s.StartDate, s.EndDate).replace(/, \d{4}$/, '');
+      box.innerHTML = `${title}<div class="wx-sub">Typical for ${esc(range)} · based on ${c.firstYear}–${c.lastYear}</div>
+        <div class="days">${c.perDay.map(d => `<div class="d"><b>${esc(fmtDate(iso(d.day)).split(',')[0])} ${d.day.getDate()}</b>
+          <div class="t">${d.hi != null ? d.hi + '°' : '—'}</div><div class="c">${d.lo != null ? d.lo + '° low' : ''}</div>
+          <div class="c">${d.years ? (d.wet ? `Rain ${d.wet} of ${d.years} yrs` : 'No rain') : ''}</div></div>`).join('')}</div>
+        ${c.recHi ? `<div class="note wx-rec">Hottest on these dates: ${Math.round(c.recHi.t)}° (${c.recHi.y}) · Coolest: ${Math.round(c.recLo.t)}° (${c.recLo.y})</div>` : ''}
+        <div class="note wx-rec">The day-by-day forecast replaces this about two weeks before the trip.</div>`;
+      return;
+    }
     if (!wxCache[key]) {
-      const city = s.City.split(',')[0].trim();
-      const g = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=10&language=en&countryCode=US`)).json();
-      const st = (s.City.split(',')[1] || '').trim().toUpperCase();
-      const place = (g.results || []).find(p => !st || (p.admin1 || '').toUpperCase().startsWith(st) || abbr(p.admin1) === st) || (g.results || [])[0];
-      if (!place) throw new Error('City not found');
       const from = start < today ? today : start;
-      const iso = d => d.toISOString().slice(0, 10);
       const lastDay = new Date(today); lastDay.setDate(lastDay.getDate() + 15);
       const to = end > lastDay ? lastDay : end;
       const w = await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&start_date=${iso(from)}&end_date=${iso(to)}`)).json();
       wxCache[key] = w.daily;
     }
     const d = wxCache[key];
-    box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="days">${d.time.map((t, i) => `<div class="d"><b>${esc(fmtDate(t).split(',')[0])}</b><div class="t">${Math.round(d.temperature_2m_max[i])}°</div><div class="c">${Math.round(d.temperature_2m_min[i])}° low</div><div class="c">${esc(WX[d.weather_code[i]] || '')}${d.precipitation_probability_max[i] != null ? ` · ${d.precipitation_probability_max[i]}% rain` : ''}</div></div>`).join('')}</div>`;
+    box.innerHTML = `${title}<div class="wx-sub">Forecast</div><div class="days">${d.time.map((t, i) => `<div class="d"><b>${esc(fmtDate(t).split(',')[0])}</b><div class="t">${Math.round(d.temperature_2m_max[i])}°</div><div class="c">${Math.round(d.temperature_2m_min[i])}° low</div><div class="c">${esc(WX[d.weather_code[i]] || '')}${d.precipitation_probability_max[i] != null ? ` · ${d.precipitation_probability_max[i]}% rain` : ''}</div></div>`).join('')}</div>`;
   } catch (e) {
-    box.innerHTML = `<h4>Weather · ${esc(s.City)}</h4><div class="note">Forecast unavailable right now.</div>`;
+    box.innerHTML = `${title}<div class="note">Weather unavailable right now.</div>`;
   }
 }
 const STATES = { 'NORTH CAROLINA': 'NC', 'SOUTH CAROLINA': 'SC', 'VIRGINIA': 'VA', 'GEORGIA': 'GA', 'FLORIDA': 'FL', 'MARYLAND': 'MD', 'DISTRICT OF COLUMBIA': 'DC', 'TENNESSEE': 'TN', 'ALABAMA': 'AL', 'NEW YORK': 'NY', 'TEXAS': 'TX', 'LOUISIANA': 'LA', 'PENNSYLVANIA': 'PA', 'NEW JERSEY': 'NJ', 'ILLINOIS': 'IL', 'CALIFORNIA': 'CA', 'NEVADA': 'NV', 'ARIZONA': 'AZ', 'MISSISSIPPI': 'MS', 'KENTUCKY': 'KY', 'OHIO': 'OH', 'MICHIGAN': 'MI', 'DELAWARE': 'DE', 'WEST VIRGINIA': 'WV' };
