@@ -3,8 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deltaversary Planner</title>
+<title>4x4 Perfect Timing · Deltaversary Planner</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Our line's Deltaversary plans, memories and milestones.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="4x4 Perfect Timing · Deltaversary Planner">
+<meta property="og:description" content="Our line's Deltaversary plans, memories and milestones.">
+<meta property="og:url" content="https://hubuserinfo.github.io/deltaversary/">
+<meta property="og:image" content="https://hubuserinfo.github.io/deltaversary/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hubuserinfo.github.io/deltaversary/preview.jpg">
+<link rel="apple-touch-icon" href="preview.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -215,6 +226,39 @@
   .ach-name { font-family: var(--serif); font-size: 26px; font-weight: 500; }
   .ach-roles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .rc-muted { color: var(--muted); font-size: 13px; }
+  /* Who's planning */
+  #who { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--crimson-deep); background-image: radial-gradient(circle at 50% 0%, var(--crimson) 0%, var(--crimson-deep) 70%); }
+  .who-card { max-width: 620px; }
+  .who-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; text-align: left; }
+  .who-btn { border: 1px solid var(--line); background: var(--cream); padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; transition: border-color .2s, background .2s; }
+  .who-btn span { font-family: var(--serif); font-size: 21px; font-weight: 500; }
+  .who-btn small { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+  .who-btn:hover, .who-btn:focus-visible { border-color: var(--crimson); background: var(--paper); outline: none; }
+  .who-now { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9BF; }
+  .who-now b { font-weight: 500; color: var(--cream); }
+  .who-now .link-btn { padding: 0; }
+
+  /* Banner */
+  .hero.has-banner { padding: 0 0 26px; background: var(--crimson-deep); }
+  .hero-banner { width: 100%; max-height: 520px; overflow: hidden; background: #2a0c12; }
+  .hero-banner img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: cover; object-position: center; }
+  .hero-info { padding: 20px 16px 0; }
+  .hero.has-banner .hero-tools { z-index: 2; background: rgba(43, 10, 16, .55); padding: 6px 10px; }
+
+  /* Requests */
+  .req-row { display: flex; justify-content: flex-end; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .req-row .link-btn { color: var(--crimson); }
+
+  /* Donation goals */
+  .goals { display: grid; gap: 16px; margin-bottom: 8px; }
+  .goal { border: 1px solid var(--line); background: var(--cream); padding: 16px 18px; }
+  .goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .goal-name { font-family: var(--serif); font-size: 22px; font-weight: 500; }
+  .goal-bar { height: 12px; background: var(--paper); border: 1px solid var(--line); margin: 10px 0 8px; overflow: hidden; }
+  .goal-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--crimson-deep), var(--crimson)); }
+  .goal-num { font-size: 14px; color: var(--muted); }
+  .goal-num b { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--crimson); }
+
   #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0; background: var(--ink); color: var(--cream); padding: 12px 20px; font-size: 14px; max-width: calc(100% - 32px); transition: all .25s; z-index: 50; pointer-events: none; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .loading { text-align: center; padding: 80px 16px; font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--muted); }
@@ -224,6 +268,7 @@
     .sec-head h2 { font-size: 30px; }
     .overview-grid, .recap-grid { grid-template-columns: 1fr; gap: 24px; }
     .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .hero.has-banner .hero-tools { position: static; display: flex; justify-content: space-between; gap: 8px; padding: 10px 16px; background: var(--crimson-deep); }
     .rc-highlights ul { columns: 1; }
     .row { grid-template-columns: 1fr; gap: 4px; padding: 14px 2px; }
     .row.head { display: none; }
@@ -249,6 +294,15 @@
   </form>
 </div>
 
+<div id="who" hidden>
+  <div class="login-card who-card">
+    <div class="eyebrow">Welcome</div>
+    <h1>Who's planning?</h1>
+    <p class="sub">Choose your name. This device will remember it.</p>
+    <div class="who-list" id="who-list"></div>
+  </div>
+</div>
+
 <div id="app" hidden>
   <header class="hero" id="hero"></header>
   <div class="bar">
@@ -260,6 +314,7 @@
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="photo-input" accept="image/*" multiple hidden>
+<input type="file" id="banner-input" accept="image/*" hidden>
 
 <script>
 /* =========================================================
@@ -267,45 +322,54 @@
    ========================================================= */
 const CONFIG = {
   API_URL: 'https://script.google.com/macros/s/AKfycbx8kwDL-fy4cKsg62GLgaZPH0vKfRi6c5SlS2qDbQcfunxlzkPCmvdb4V4QioAyVdSF/exec',
+  ORGANIZER: 'Stacey',          // the soror who manages the essentials
   LINE_NAME: '4x4 Perfect Timing',
   CHAPTER: 'Lumberton Alumnae Chapter',
   LINE_SEASON: 'Spring 2022'
 };
 
 /* ---------------- Field & block definitions ---------------- */
-const DAY_TYPES = ['Activity', 'Dining', 'Service', 'Celebration', 'Travel', 'Free time'];
+const DAY_TYPES = ['Activity', 'Dining', 'Service', 'Celebration', 'Travel', 'Free Time'];
 const STATUS = ['Idea', 'Planned', 'Booked', 'Done', 'Skipped'];
-const RSVP = ['Attending', 'Maybe', 'Not attending'];
+const RSVP = ['Attending', 'Maybe', 'Not Attending'];
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2X', '3X', '4X'];
-const MODES = ['Car', 'Flight', 'Train', 'Bus', 'Riding with a soror', 'Other'];
+const MODES = ['Car', 'Flight', 'Train', 'Bus', 'Riding With a Soror', 'Other'];
 
+// Who can change what:
+//   open      – anyone (the default)          organizer – only the organizer (Stacey)
+//   own       – only the soror the row is for  readOnly  – nobody on the page (edit in the Sheet)
 const BLOCKS = {
   itinerary: {
-    tab: 'Itinerary', noun: 'event', groupBy: 'Day', sort: ['Day', 'Time'],
+    tab: 'Itinerary', noun: 'Event', groupBy: 'Day', sort: ['Day', 'Time'],
     fields: [
       { k: 'Day', label: 'Date', type: 'date' },
       { k: 'Time', label: 'Time', type: 'time' },
       { k: 'Event', label: 'Event', req: true, full: true },
       { k: 'Type', label: 'Type', type: 'select', options: DAY_TYPES },
       { k: 'Status', label: 'Status', type: 'select', options: STATUS },
-      { k: 'Location', label: 'Location / address', full: true },
-      { k: 'Attire', label: 'Attire / colors' },
-      { k: 'Cost', label: 'Cost per person' },
+      { k: 'Location', label: 'Location / Address', full: true },
+      { k: 'Attire', label: 'Attire / Colors' },
+      { k: 'Cost', label: 'Cost Per Person' },
       { k: 'Notes', label: 'Notes', type: 'textarea', full: true }
     ],
     cols: [{ k: 'Time', w: '.75fr' }, { k: 'Event', w: '3fr', primary: true, meta: ['Location', 'Attire', 'Cost', 'Notes'] }, { k: 'Type', w: '1fr' }, { k: 'Status', w: '.9fr', badge: true }]
   },
-  wishlist: {
-    tab: 'Wishlist', fixed: 'roster', layout: 'cards',
+  exchanges: {
+    tab: 'Exchanges', noun: 'Exchange', organizer: true, sort: ['ExchangeDate'],
     fields: [
-      { k: 'Wishes', label: 'Wish list', type: 'textarea', full: true, ph: 'Gift ideas, links, stores…' },
-      { k: 'Favorites', label: 'Favorites & sizes', type: 'textarea', full: true, ph: 'Colors, scents, snacks, sizes…' }
-    ]
+      { k: 'Name', label: 'Exchange', type: 'select', options: ['Deltaversary', 'Christmas', 'Other'], req: true },
+      { k: 'Budget', label: 'Gift Amount', ph: '$30' },
+      { k: 'ExchangeDate', label: 'Exchange Date', type: 'date' },
+      { k: 'DrawLink', label: 'Draw App Link', type: 'url', full: true, ph: 'Paste the name-draw invitation link' },
+      { k: 'Notes', label: 'Notes', full: true }
+    ],
+    cols: [{ k: 'Name', w: '1.6fr', primary: true, meta: ['Notes'] }, { k: 'Budget', w: '.8fr' }, { k: 'ExchangeDate', w: '1fr' },
+      { k: 'DrawLink', w: '1fr', label: 'Name Draw', render: r => safeUrl(r.DrawLink) ? `<a href="${esc(safeUrl(r.DrawLink))}" target="_blank" rel="noopener">Open Draw ↗</a>` : '' }]
   },
   service: {
-    tab: 'Service', noun: 'project', sort: ['Date', 'Time'],
+    tab: 'Service', noun: 'Project', sort: ['Date', 'Time'],
     fields: [
-      { k: 'Project', label: 'Project / organization', req: true, full: true },
+      { k: 'Project', label: 'Project / Organization', req: true, full: true },
       { k: 'Date', label: 'Date', type: 'date' },
       { k: 'Time', label: 'Time', type: 'time' },
       { k: 'Attire', label: 'Attire' },
@@ -314,37 +378,40 @@ const BLOCKS = {
     ],
     cols: [{ k: 'Project', w: '3fr', primary: true, meta: ['Location', 'Attire', 'Summary'] }, { k: 'Date', w: '1fr' }, { k: 'Time', w: '.8fr' }]
   },
-  signup: {
-    tab: 'Signup', noun: 'item',
+  goals: {
+    tab: 'Goals', noun: 'Goal', organizer: true, rowRender: r => goalHTML(r),
     fields: [
-      { k: 'Item', label: 'Item', req: true, full: true },
-      { k: 'Project', label: 'For which project' },
-      { k: 'Soror', label: 'Soror', type: 'soror' }
+      { k: 'Project', label: 'Project', req: true, full: true, ph: 'RCC Scholarship' },
+      { k: 'Goal', label: 'Goal Amount', req: true, ph: '$500' }
     ],
-    cols: [{ k: 'Item', w: '3fr', primary: true }, { k: 'Project', w: '1.4fr' }, { k: 'Soror', w: '1fr' }]
+    cols: [{ k: 'Project', w: '1fr', primary: true }]
   },
-  games: {
-    tab: 'Games', noun: 'game or activity',
+  donations: {
+    tab: 'Donations', noun: 'Donation', own: 'Soror', organizerToo: true,
     fields: [
-      { k: 'Name', label: 'Game / activity', req: true, full: true },
-      { k: 'Type', label: 'Type', type: 'select', options: ['Game', 'Music', 'Movie / show', 'Activity', 'Other'] },
-      { k: 'Day', label: 'Date', type: 'date' },
-      { k: 'Soror', label: 'Bringing / hosting', type: 'soror', group: true }
+      { k: 'Project', label: 'For', type: 'suggest', req: true, ph: 'RCC Scholarship, nursing home toiletries…' },
+      { k: 'Kind', label: 'Money or Items', type: 'select', options: ['Money', 'Items'], req: true },
+      { k: 'Amount', label: 'Amount', ph: '$50' },
+      { k: 'Items', label: 'Items', ph: '20 toothbrushes' },
+      { k: 'Soror', label: 'Soror', type: 'soror', organizerOnly: true },
+      { k: 'Notes', label: 'Notes', full: true }
     ],
-    cols: [{ k: 'Name', w: '2.6fr', primary: true }, { k: 'Type', w: '1fr' }, { k: 'Day', w: '1fr' }, { k: 'Soror', w: '1fr' }]
+    cols: [{ k: 'Soror', w: '1.1fr', primary: true, meta: ['Notes'] }, { k: 'Project', w: '1.6fr', label: 'For' },
+      { k: 'Gift', w: '1.4fr', label: 'Gift', render: r => esc(r.Kind === 'Money' || (!r.Items && r.Amount) ? fmtMoney(money(r.Amount)) : r.Items) }]
   },
   bring: {
-    tab: 'Bring', noun: 'item',
+    tab: 'Bring', noun: 'Item',
     fields: [
-      { k: 'Item', label: 'Item', req: true, full: true },
-      { k: 'Soror', label: 'Who is bringing it', type: 'soror', group: true }
+      { k: 'Item', label: 'Item', req: true },
+      { k: 'Purpose', label: 'Purpose', ph: 'For drinks, cup-stacking game…' },
+      { k: 'Soror', label: 'Who Is Bringing It', type: 'soror', group: true }
     ],
-    cols: [{ k: 'Item', w: '3fr', primary: true }, { k: 'Soror', w: '1fr' }]
+    cols: [{ k: 'Item', w: '1.8fr', primary: true }, { k: 'Purpose', w: '2fr' }, { k: 'Soror', w: '1fr' }]
   },
   lodging: {
-    tab: 'LodgingOptions', noun: 'option',
+    tab: 'LodgingOptions', noun: 'Option', organizer: true,
     fields: [
-      { k: 'Name', label: 'Hotel / rental', req: true, full: true },
+      { k: 'Name', label: 'Hotel / Rental', req: true, full: true },
       { k: 'Distance', label: 'Distance' },
       { k: 'Price', label: 'Price' },
       { k: 'Link', label: 'Link', type: 'url' },
@@ -353,44 +420,34 @@ const BLOCKS = {
     cols: [{ k: 'Name', w: '2.6fr', primary: true, meta: ['Features', 'Link'] }, { k: 'Distance', w: '1.2fr' }, { k: 'Price', w: '1fr' }]
   },
   rooms: {
-    tab: 'Rooms', noun: 'room',
+    tab: 'Rooms', noun: 'Room', organizer: true,
     fields: [
-      { k: 'Room', label: 'Room / villa', req: true },
-      { k: 'Sorors', label: 'Who is staying', full: true, ph: 'e.g. Stacey, Gabby, Sonia' }
+      { k: 'Room', label: 'Room / Villa', req: true },
+      { k: 'Sorors', label: 'Who Is Staying', full: true, ph: 'e.g. Stacey, Gabby, Sonia' }
     ],
     cols: [{ k: 'Room', w: '1fr', primary: true }, { k: 'Sorors', w: '3fr' }]
   },
-  collections: {
-    tab: 'Collections', noun: 'payment',
-    fields: [
-      { k: 'Item', label: 'For', req: true, ph: 'Dinner cruise, scholarship, suite…' },
-      { k: 'Soror', label: 'Soror', type: 'soror' },
-      { k: 'Amount', label: 'Amount', ph: '$0.00' },
-      { k: 'Paid', label: 'Paid?', type: 'select', options: ['No', 'Yes'] }
-    ],
-    cols: [{ k: 'Item', w: '2fr', primary: true }, { k: 'Soror', w: '1fr' }, { k: 'Amount', w: '.8fr' }, { k: 'Paid', w: '.7fr', badge: true }]
-  },
   attendance: {
-    tab: 'Attendance', fixed: 'roster',
+    tab: 'Attendance', fixed: 'roster', own: 'Soror',
     fields: [
       { k: 'Status', label: 'RSVP', type: 'select', options: RSVP },
-      { k: 'ShirtW', label: "T-shirt (women's)", type: 'select', options: SIZES },
-      { k: 'ShirtU', label: 'T-shirt (unisex)', type: 'select', options: SIZES },
+      { k: 'ShirtW', label: "T-Shirt (Women's)", type: 'select', options: SIZES },
+      { k: 'ShirtU', label: 'T-Shirt (Unisex)', type: 'select', options: SIZES },
       { k: 'Notes', label: 'Notes', full: true, ph: 'e.g. Arriving Saturday, skipping service day' }
     ],
     cols: [{ k: 'Soror', w: '1.3fr', primary: true }, { k: 'Status', w: '1.1fr', badge: true }, { k: 'ShirtW', w: '.9fr', label: "Women's" }, { k: 'ShirtU', w: '.9fr', label: 'Unisex' }, { k: 'Notes', w: '2fr' }]
   },
   travel: {
-    tab: 'Attendance', fixed: 'attending',
+    tab: 'Attendance', fixed: 'attending', own: 'Soror',
     fields: [
-      { k: 'ArriveDay', label: 'Arrival date', type: 'date' },
-      { k: 'ArriveTime', label: 'Arrival time', type: 'time' },
-      { k: 'ArriveMode', label: 'Getting there', type: 'select', options: MODES },
-      { k: 'ArriveDetails', label: 'Flight # / details' },
-      { k: 'DepartDay', label: 'Departure date', type: 'date' },
-      { k: 'DepartTime', label: 'Departure time', type: 'time' },
-      { k: 'DepartMode', label: 'Heading home', type: 'select', options: MODES },
-      { k: 'DepartDetails', label: 'Flight # / details' }
+      { k: 'ArriveDay', label: 'Arrival Date', type: 'date' },
+      { k: 'ArriveTime', label: 'Arrival Time', type: 'time' },
+      { k: 'ArriveMode', label: 'Getting There', type: 'select', options: MODES },
+      { k: 'ArriveDetails', label: 'Flight # / Details' },
+      { k: 'DepartDay', label: 'Departure Date', type: 'date' },
+      { k: 'DepartTime', label: 'Departure Time', type: 'time' },
+      { k: 'DepartMode', label: 'Heading Home', type: 'select', options: MODES },
+      { k: 'DepartDetails', label: 'Flight # / Details' }
     ],
     cols: [
       { k: 'Soror', w: '1.2fr', primary: true },
@@ -399,30 +456,29 @@ const BLOCKS = {
     ]
   },
   highlights: {
-    tab: 'Highlights', noun: 'highlight',
+    tab: 'Highlights', noun: 'Highlight',
     fields: [{ k: 'Text', label: 'Highlight', type: 'textarea', req: true, full: true, ph: 'A moment worth remembering…' }],
     cols: [{ k: 'Text', w: '1fr', primary: true, plain: true }]
   },
   photos: {
-    tab: 'Photos', noun: 'photo',
+    tab: 'Photos', noun: 'Photo', own: 'EditedBy', organizerToo: true,
     fields: [{ k: 'Caption', label: 'Caption', full: true, ph: 'Who, where, what was happening' }]
   },
   achievements: {
-    tab: 'Achievements', global: true, noun: 'achievement',
+    tab: 'Achievements', global: true, noun: 'Achievement',
     rowsFn: () => achievementRows(), groupFn: r => achYear(r) || 'Undated', sortedByFn: true,
     fields: [
-      { k: 'Category', label: 'Delta or personal', type: 'select', options: ['Delta', 'Personal'], req: true },
+      { k: 'Category', label: 'Delta or Personal', type: 'select', options: ['Delta', 'Personal'], req: true },
       { k: 'Scope', label: 'For', type: 'select', options: ['Individual', 'Line'] },
       { k: 'Soror', label: 'Soror', type: 'sororAll' },
-      { k: 'Type', label: 'Type', type: 'select', options: ['Award', 'Committee', 'Board', 'Office', 'Degree', 'Promotion', 'New role', 'Certification', 'Milestone', 'Other'] },
+      { k: 'Type', label: 'Type', type: 'select', options: ['Award', 'Committee', 'Board', 'Office', 'Degree', 'Promotion', 'New Role', 'Certification', 'Milestone', 'Other'] },
       { k: 'Title', label: 'Achievement', req: true, full: true, ph: 'e.g. Soror of the Year, Master’s degree, Social Action Committee' },
-      { k: 'Level', label: 'Level or organization', ph: 'Chapter, Regional, National, a school or employer' },
-      { k: 'Role', label: 'Role', ph: 'Chair, Co-chair, Member…' },
-      { k: 'Date', label: 'Month (one-time achievements)', type: 'month' },
-      { k: 'StartYear', label: 'Served from (year)', ph: 'For committees, boards, offices' },
-      { k: 'EndYear', label: 'Served through', ph: 'A year, or "present"' },
-      { k: 'Link', label: 'Link (optional)', type: 'url' },
-      { k: 'AddedBy', label: 'Who is adding this', type: 'sororAll', req: true },
+      { k: 'Level', label: 'Level or Organization', ph: 'Chapter, Regional, National, a school or employer' },
+      { k: 'Role', label: 'Role', ph: 'Chair, Co-Chair, Member…' },
+      { k: 'Date', label: 'Month (One-Time Achievements)', type: 'month' },
+      { k: 'StartYear', label: 'Served From (Year)', ph: 'For committees, boards, offices' },
+      { k: 'EndYear', label: 'Served Through', ph: 'A year, or "present"' },
+      { k: 'Link', label: 'Link (Optional)', type: 'url' },
       { k: 'Notes', label: 'Notes', type: 'textarea', full: true }
     ],
     cols: [
@@ -432,25 +488,18 @@ const BLOCKS = {
       { k: 'When', w: '1fr', label: 'When', render: r => esc(achWhen(r)) }
     ]
   },
-  feedback: {
-    tab: 'Feedback', noun: 'comment',
+  requests: {
+    tab: 'Requests', noun: 'Request', organizer: true, sort: ['Status'],
     fields: [
-      { k: 'Comment', label: 'Comment or suggestion', type: 'textarea', req: true, full: true },
-      { k: 'Soror', label: 'From', type: 'soror' }
+      { k: 'Section', label: 'Section', type: 'select', options: ['The Celebration', 'Secret Soror', 'Donation Goals', 'Lodging', 'Memories', 'Line Roster', 'Other'] },
+      { k: 'Request', label: 'What Should Change?', type: 'textarea', req: true, full: true, ph: 'e.g. Please update the check-in time to 4:00 PM' }
     ],
-    cols: [{ k: 'Comment', w: '4fr', primary: true, plain: true }, { k: 'Soror', w: '1fr' }]
+    cols: [{ k: 'Request', w: '3fr', primary: true, plain: true, meta: ['From', 'Section', 'EditedAt'] }, { k: 'Status', w: '.8fr', badge: true }]
   },
   roster: {
-    tab: 'Roster', global: true, noun: 'soror', lineSort: true,
-    fields: [
-      { k: 'Name', label: 'Name shown', req: true },
-      { k: 'FullName', label: 'Full name' },
-      { k: 'LineNumber', label: 'Line #' },
-      { k: 'LineName', label: 'Line name' },
-      { k: 'Active', label: 'Status', type: 'select', options: ['Yes', 'No', 'In memory'] },
-      { k: 'MemorialFrom', label: 'Memorial from (year)', ph: 'e.g. 2027' }
-    ],
-    cols: [{ k: 'LineNumber', w: '.4fr', label: '#' }, { k: 'Name', w: '1fr', primary: true }, { k: 'LineName', w: '1.3fr' }, { k: 'FullName', w: '1.6fr' }, { k: 'Active', w: '.8fr', label: 'Active' }]
+    tab: 'Roster', global: true, noun: 'Soror', lineSort: true, readOnly: true,
+    fields: [],
+    cols: [{ k: 'LineNumber', w: '.4fr', label: '#' }, { k: 'Name', w: '1fr', primary: true }, { k: 'LineName', w: '1.3fr', label: 'Line Name' }, { k: 'FullName', w: '1.6fr', label: 'Full Name' }]
   }
 };
 
@@ -462,40 +511,37 @@ const SETTINGS = {
     { k: 'EndDate', label: 'Ends', type: 'date' },
     { k: 'Theme', label: 'Theme', full: true, ph: 'Optional theme or tagline' }
   ],
-  secret: [
-    { k: 'GiftBudget', label: 'Gift amount', ph: '$30' },
-    { k: 'ExchangeDate', label: 'Exchange date', type: 'date' },
-    { k: 'DrawLink', label: 'Name draw link', type: 'url', full: true, ph: 'drawnames.app link' }
-  ],
   stay: [
-    { k: 'Lodging', label: 'Where we are staying', full: true },
+    { k: 'Lodging', label: 'Where We Are Staying', full: true },
     { k: 'Address', label: 'Address', full: true },
-    { k: 'Checkin', label: 'Check-in', ph: 'Time, key pickup, parking' },
-    { k: 'Wifi', label: 'Wi-Fi' }
+    { k: 'Checkin', label: 'Check-In', type: 'time' },
+    { k: 'Checkout', label: 'Check-Out', type: 'time' },
+    { k: 'Parking', label: 'Nightly Parking Fee', ph: '$45' }
   ],
   memories: [
-    { k: 'AlbumLink', label: 'Shared photo album', type: 'url', full: true },
-    { k: 'Notes', label: 'Notes for the year', type: 'textarea', full: true }
+    { k: 'AlbumLink', label: 'Shared Photo Album', type: 'url', full: true },
+    { k: 'Notes', label: 'Notes for the Year', type: 'textarea', full: true }
   ]
 };
+const SETTINGS_SECTION = { overview: 'The Celebration', stay: 'Lodging', memories: 'Memories' };
 
 const SECTIONS = [
+  { id: 'requests', title: 'Change Requests', organizerOnly: true },
   { id: 'overview', title: 'The Celebration' },
   { id: 'coming', title: "Who's Coming" },
   { id: 'itinerary', title: 'Itinerary' },
   { id: 'secret', title: 'Secret Soror' },
   { id: 'service', title: 'Service & Scholarship' },
-  { id: 'games', title: 'Games & Entertainment' },
+  { id: 'donations', title: 'Donations' },
   { id: 'bring', title: "What We're Bringing" },
   { id: 'lodging', title: 'Lodging' },
-  { id: 'collections', title: 'Collections' },
   { id: 'travel', title: 'Travel' },
   { id: 'achievements', title: 'Achievements' },
-  { id: 'memories', title: 'Memories & Feedback' }
+  { id: 'memories', title: 'Memories' }
 ];
 
 /* ---------------- State ---------------- */
-const state = { key: '', year: '', settings: [], roster: [], achievements: [], data: {}, edits: {}, pending: 0, loaded: false,
+const state = { key: '', me: '', year: '', settings: [], roster: [], achievements: [], data: {}, edits: {}, pending: 0, loaded: false,
   ach: { range: 'since', cat: '', soror: '' } };
 
 /* ---------------- Helpers ---------------- */
@@ -548,12 +594,24 @@ function memorialHTML() {
   const m = memorialRoster(); if (!m.length) return '';
   return `<div class="memoriam"><div class="eyebrow">In Memory Of</div>${m.map(r => `<div class="mem-name">Soror ${esc(r.FullName || r.Name)}</div>${lineLabel(r) ? `<div class="mem-line">${esc(lineLabel(r))}</div>` : ''}`).join('')}</div>`;
 }
+function isOrganizer() { return !!state.me && state.me === CONFIG.ORGANIZER; }
+// Can the signed-in soror change this row? (Honor system: the passphrase is shared, the name is chosen.)
+function canEdit(name, r) {
+  const b = BLOCKS[name] || {};
+  if (b.readOnly || !state.me) return false;
+  if (b.organizer) return isOrganizer();
+  if (name === 'achievements') return !r || r.Category !== 'Personal' || r.Soror === state.me;
+  if (b.own) { const owner = r && r[b.own]; return !owner || owner === state.me || (b.organizerToo && isOrganizer()); }
+  return true;
+}
+function canAdd(name) { const b = BLOCKS[name] || {}; return !b.readOnly && !b.fixed && !!state.me && (!b.organizer || isOrganizer()); }
+function fmtMoney(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
 function tabRows(tab) { return tab === 'Roster' ? state.roster : tab === 'Settings' ? state.settings : tab === 'Achievements' ? state.achievements : (state.data[tab] || []); }
 function setTabRows(tab, rows) { if (tab === 'Roster') state.roster = rows; else if (tab === 'Settings') state.settings = rows; else if (tab === 'Achievements') state.achievements = rows; else state.data[tab] = rows; }
 
 /* ---------------- API ---------------- */
 async function api(payload) {
-  const res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(Object.assign({}, payload, { key: state.key })) });
+  const res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(Object.assign({}, payload, { key: state.key, by: state.me })) });
   if (!res.ok) throw new Error('Network error (' + res.status + ')');
   const j = await res.json();
   if (!j.ok) throw new Error(j.error || 'Something went wrong');
@@ -592,14 +650,25 @@ async function signIn(key, silent) {
     const j = await api({ action: 'load', year: store.get('dv-year') || '' });
     store.set('dv-key', key);
     applyLoad(j);
-    $('#login').hidden = true; $('#app').hidden = false;
-    render();
+    $('#login').hidden = true;
+    const me = store.get('dv-me');
+    if (me && activeRoster().includes(me)) { state.me = me; showApp(); } else showWho();
   } catch (err) {
     store.del('dv-key');
     $('#login-msg').textContent = err.message === 'auth' ? 'That passphrase didn’t match. Please try again.' : 'Couldn’t connect: ' + err.message;
   } finally { btn.disabled = false; }
 }
 function signOut() { store.del('dv-key'); location.reload(); }
+function showApp() { $('#who').hidden = true; $('#app').hidden = false; render(); }
+function showWho() {
+  const names = activeRoster().slice().sort((a, b) => lineNum(a) - lineNum(b));
+  $('#who-list').innerHTML = names.map(n => `<button class="who-btn" data-act="pick-me" data-name="${esc(n)}"><span>${esc(n)}</span><small>${esc(lineLabel(sororInfo(n)))}</small></button>`).join('');
+  $('#app').hidden = true; $('#who').hidden = false;
+}
+function pickMe(name) {
+  if (hasUnsaved() && !confirm('You have unsaved changes. Switch anyway?')) return;
+  state.edits = {}; state.me = name; store.set('dv-me', name); showApp(); window.scrollTo({ top: 0 });
+}
 
 /* ---------------- Rendering ---------------- */
 function render() {
@@ -609,8 +678,9 @@ function render() {
   renderHero(s, past);
   renderYears();
   $('#secnav').hidden = past;
-  $('#secnav').innerHTML = past ? '' : SECTIONS.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
-  $('#main').innerHTML = past ? recapHTML(s) : SECTIONS.map(x => sectionHTML(x, s)).join('');
+  const secs = SECTIONS.filter(x => !x.organizerOnly || (isOrganizer() && (state.data.Requests || []).length));
+  $('#secnav').innerHTML = past ? '' : secs.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
+  $('#main').innerHTML = past ? recapHTML(s) : secs.map(x => sectionHTML(x, s)).join('');
   const mem = memorialRoster().map(r => 'Soror ' + (r.FullName || r.Name)).join(' · ');
   $('#footer').innerHTML = `<span class="serif">${esc(CONFIG.LINE_NAME)}</span>${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}`
     + (mem ? `<div class="foot-mem">In memory of ${esc(mem)}</div>` : '');
@@ -640,15 +710,37 @@ function renderHero(s, past) {
     else if (today <= end) count = 'Celebrating now';
     else count = 'Celebrated';
   }
-  $('#hero').innerHTML = `
-    <div class="hero-tools"><span class="sync" id="sync"></span><span>
+  const banner = bannerSrc(s.Banner);
+  const tools = `<div class="hero-tools"><span class="who-now">Planning as <b>${esc(state.me)}</b> · <button class="link-btn" data-act="switch">Switch</button></span>
+      <span><span class="sync" id="sync"></span>${isOrganizer() ? `<button class="link-btn" data-act="banner">${banner ? 'Change Banner' : 'Add Banner'}</button>` : ''}
       <button class="link-btn" data-act="refresh">Refresh</button>
-      <button class="link-btn" data-act="signout">Sign out</button></span></div>
-    <div class="eyebrow">${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}</div>
-    <h1>${esc(CONFIG.LINE_NAME)}</h1>
-    <div class="num">${esc(num)}${s.Theme ? ` — ${esc(s.Theme)}` : ''}</div>
+      <button class="link-btn" data-act="signout">Sign Out</button></span></div>`;
+  const details = `<div class="num">${esc(num)}${s.Theme ? ` — ${esc(s.Theme)}` : ''}</div>
     ${where ? `<div class="where">${esc(where)}</div>` : ''}
     ${count ? `<div class="count">${esc(count)}</div>` : ''}`;
+  $('#hero').classList.toggle('has-banner', !!banner);
+  $('#hero').innerHTML = banner
+    ? `${tools}<div class="hero-banner"><img src="${esc(banner)}" alt="${esc(CONFIG.LINE_NAME)} ${esc(state.year)} banner"></div><div class="hero-info">${details}</div>`
+    : `${tools}<div class="eyebrow">${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}</div>
+    <h1>${esc(CONFIG.LINE_NAME)}</h1>${details}`;
+}
+
+function bannerSrc(v) {
+  if (!v) return '';
+  if (/^drive:/.test(v)) return photoSrc(v.slice(6), 2400);
+  return /^[\w./-]+$/.test(v) || /^https:\/\//.test(v) ? v : '';
+}
+async function uploadBanner(file) {
+  const year = state.year;
+  try {
+    setSync('Uploading banner…');
+    const data = await resizeImage(file, 2400);
+    const j = await api({ action: 'uploadPhoto', purpose: 'banner', year, name: 'banner-' + year + '.jpg', data });
+    const s = settingsRow(); const row = Object.assign({}, s, { Banner: j.banner });
+    const i = state.settings.findIndex(x => x.id === s.id);
+    if (i >= 0) state.settings[i] = row; else state.settings.push(row);
+    render(); setSync('Banner updated');
+  } catch (err) { setSync(''); handleErr(err, 'Banner not changed'); }
 }
 
 function renderYears() {
@@ -662,6 +754,9 @@ function sectionHTML(sec, s) {
   const head = (intro) => `<div class="sec-head"><h2>${esc(sec.title)}</h2></div>${intro ? `<p class="sec-intro">${intro}</p>` : ''}`;
   let body = '';
   switch (sec.id) {
+    case 'requests':
+      body = head('Change requests from your line sisters. Mark each one done once you’ve updated the page or the Sheet.') + listBlock('requests');
+      break;
     case 'overview': {
       const att = (state.data.Attendance || []).filter(r => r.Status === 'Attending').length;
       const maybe = (state.data.Attendance || []).filter(r => r.Status === 'Maybe').length;
@@ -678,44 +773,37 @@ function sectionHTML(sec, s) {
       break;
     }
     case 'coming':
-      body = head('RSVPs and T-shirt sizes for everyone on the line. Each soror can update her own row.')
+      body = head('RSVPs and T-shirt sizes for everyone on the line. Each soror updates her own row.')
         + listBlock('attendance')
         + memorialHTML()
-        + `<details class="roster"${state.edits && Object.keys(state.edits).some(k => k.startsWith('roster:')) ? ' open' : ''}><summary>Line roster (${state.roster.length})</summary>${listBlock('roster')}</details>`;
+        + `<details class="roster"><summary>Line Roster (${state.roster.length})</summary>${listBlock('roster')}${requestHTML('Line Roster')}</details>`;
       break;
     case 'itinerary':
       body = head('Everything on the schedule, by day. Mark each event as booked, done or skipped, since we don’t always get to everything.') + listBlock('itinerary');
       break;
     case 'secret':
-      body = head('Our standing tradition. Draw names, then fill in your wish list so your Secret Soror has time to shop.')
-        + settingsBlock('secret', s) + `<h3 class="sub">Wish lists</h3>` + listBlock('wishlist');
+      body = head('Our standing tradition. Names and wish lists live in the draw app; each exchange below has its own gift amount, date and draw link.')
+        + listBlock('exchanges') + (isOrganizer() ? '' : requestHTML('Secret Soror'));
       break;
     case 'service':
-      body = head('Public service and scholarship projects for this Deltaversary, plus the donation sign-up.')
-        + `<h3 class="sub">Projects</h3>` + listBlock('service') + `<h3 class="sub">Donation sign-up</h3>` + listBlock('signup');
+      body = head('Public service and scholarship projects for this Deltaversary. Money and items given toward them are tracked under Donations.')
+        + listBlock('service');
       break;
-    case 'games':
-      body = head('Games, music, movies and anything else for the fun nights, and who is bringing or hosting it.') + listBlock('games');
+    case 'donations':
+      body = head('Money and items given toward our scholarship and service projects. Each soror adds her own gift.')
+        + `<h3 class="sub">Goals</h3>` + listBlock('goals') + (isOrganizer() ? '' : requestHTML('Donation Goals'))
+        + `<h3 class="sub">Gifts</h3>` + listBlock('donations');
       break;
     case 'bring':
-      body = head('Shared items for the group and who is bringing each one.') + listBlock('bring');
+      body = head('Shared items for the group, what each one is for, and who is bringing it.') + listBlock('bring');
       break;
     case 'lodging':
       body = head('Where we are staying, the options we compared, and who is in which room.')
-        + `<h3 class="sub">Our stay</h3>` + settingsBlock('stay', s)
-        + `<h3 class="sub">Options considered</h3>` + listBlock('lodging')
-        + `<h3 class="sub">Room assignments</h3>` + listBlock('rooms');
+        + `<h3 class="sub">Our Stay</h3>` + settingsBlock('stay', s)
+        + `<h3 class="sub">Options Considered</h3>` + listBlock('lodging')
+        + `<h3 class="sub">Room Assignments</h3>` + listBlock('rooms')
+        + (isOrganizer() ? '' : requestHTML('Lodging'));
       break;
-    case 'collections': {
-      const rows = state.data.Collections || [];
-      const total = rows.reduce((a, r) => a + money(r.Amount), 0);
-      const paid = rows.filter(r => r.Paid === 'Yes').reduce((a, r) => a + money(r.Amount), 0);
-      const f = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      body = head('Dues and shared costs: what each soror owes and whether it has been paid.')
-        + (rows.length ? `<div class="stats" style="margin:0 0 22px"><div class="stat"><div class="n">${f(total)}</div><div class="l">Total</div></div><div class="stat"><div class="n">${f(paid)}</div><div class="l">Collected</div></div><div class="stat"><div class="n">${f(total - paid)}</div><div class="l">Outstanding</div></div></div>` : '')
-        + listBlock('collections');
-      break;
-    }
     case 'travel':
       body = head('Arrivals and departures for everyone marked Attending or Maybe, so we can coordinate rides and pickups.') + listBlock('travel');
       break;
@@ -724,11 +812,10 @@ function sectionHTML(sec, s) {
         + achievementsHTML();
       break;
     case 'memories':
-      body = head('Photos and highlights from the weekend, and comments to bring to the next meeting so the next Deltaversary is even better.')
+      body = head('Photos and highlights from the celebration.')
         + `<h3 class="sub">Photos</h3>` + galleryHTML()
         + `<h3 class="sub">Highlights</h3>` + listBlock('highlights')
-        + `<h3 class="sub">Album & notes</h3>` + settingsBlock('memories', s)
-        + `<h3 class="sub">Comments for the next meeting</h3>` + listBlock('feedback');
+        + `<h3 class="sub">Album & Notes</h3>` + settingsBlock('memories', s);
       break;
   }
   return `<section class="section" id="${sec.id}">${body}</section>`;
@@ -770,7 +857,7 @@ function achievementRows() {
 }
 function achievementProblem(r) {
   if (r.Scope !== 'Line' && !r.Soror) return 'Please choose the soror this achievement belongs to.';
-  if (r.Category === 'Personal' && r.Scope !== 'Line' && r.AddedBy !== r.Soror) return 'Personal achievements are added by the sister herself. Choose her name under “Who is adding this.”';
+  if (r.Category === 'Personal' && r.Scope !== 'Line' && r.Soror !== state.me) return 'Personal achievements are shared by the sister herself, so they can only be added under your own name.';
   if (!r.Date && !r.StartYear) return 'Add the month it happened, or the year she started serving.';
   return '';
 }
@@ -789,7 +876,7 @@ function achievementsHTML() {
   const sorors = state.roster.slice().sort((a, c) => lineNum(a.Name) - lineNum(c.Name));
   const opt = (v, label, cur) => `<option value="${esc(v)}"${v === cur ? ' selected' : ''}>${esc(label)}</option>`;
   const controls = `<div class="ach-filters">
-    <label>Show <select data-filter="range">${opt('since', since ? 'Since our last Deltaversary' : 'All Years', f.range)}${since ? opt('all', 'All years', f.range) : ''}</select></label>
+    <label>Show <select data-filter="range">${opt('since', since ? 'Since Our Last Deltaversary' : 'All Years', f.range)}${since ? opt('all', 'All Years', f.range) : ''}</select></label>
     <label>Kind <select data-filter="cat">${opt('', 'Delta & Personal', f.cat)}${opt('Delta', 'Delta', f.cat)}${opt('Personal', 'Personal', f.cat)}</select></label>
     <label>Soror <select data-filter="soror">${opt('', 'Whole Line', f.soror)}${sorors.map(p => opt(p.Name, p.Name, f.soror)).join('')}</select></label>
   </div>`;
@@ -802,7 +889,7 @@ function achievementsHTML() {
       ${roles.length ? `<div class="ach-roles">${roles.map(a => `<span class="rc-chip">${esc([a.Role, a.Title].filter(Boolean).join(', '))}</span>`).join('')}</div>` : ''}</div>`;
   }
   BLOCKS.achievements.emptyText = () => f.range === 'since' && since
-    ? `Nothing recorded since ${fmtDate(since, true).split(', ')[1]}, ${since.slice(0, 4)} yet. Choose “All years” to see everything.`
+    ? `Nothing recorded since ${fmtDate(since, true).split(', ')[1]}, ${since.slice(0, 4)} yet. Choose “All Years” to see everything.`
     : 'No achievements recorded yet.';
   return controls + banners + profile + listBlock('achievements');
 }
@@ -816,11 +903,11 @@ function galleryHTML() {
     ? `<div class="gallery">${rows.map((r, i) => `<figure class="ph">
         <button class="ph-img" data-act="zoom" data-i="${i}" aria-label="Open photo${r.Caption ? ': ' + esc(r.Caption) : ''}"><img src="${esc(photoSrc(r.FileId, 900))}" alt="${esc(r.Caption || 'Deltaversary photo')}" loading="lazy"></button>
         <figcaption>${r.Caption ? esc(r.Caption) : '<span class="dash">No caption</span>'}
-          <span class="ph-acts"><button class="link-btn" data-act="edit" data-b="photos" data-id="${esc(r.id)}">Caption</button><button class="link-btn danger" data-act="del" data-b="photos" data-id="${esc(r.id)}">Remove</button></span>
+          ${canEdit('photos', r) ? `<span class="ph-acts"><button class="link-btn" data-act="edit" data-b="photos" data-id="${esc(r.id)}">Caption</button><button class="link-btn danger" data-act="del" data-b="photos" data-id="${esc(r.id)}">Remove</button></span>` : ''}
         </figcaption></figure>`).join('')}</div>`
     : `<div class="empty">No photos yet. About six favorites per year looks best.</div>`;
   if (editing) { const r = rows.find(x => `photos:${x.id}` === editing); html += editorHTML(editing, BLOCKS.photos.fields, state.edits[editing], 'Photo caption', false); }
-  html += `<div class="add-row"><button class="btn ghost" data-act="upload">+ Add photos</button><span class="up-status" id="up-status"></span></div>`;
+  html += `<div class="add-row"><button class="btn ghost" data-act="upload">+ Add Photos</button><span class="up-status" id="up-status"></span></div>`;
   return html;
 }
 
@@ -892,7 +979,10 @@ function recapHTML(s) {
   const service = blockRows('service').map(r => `<li><div class="rc-name">${esc(r.Project)}</div>${meta({ When: [fmtDate(r.Date), fmtTime(r.Time)].filter(Boolean).join(' at '), Location: r.Location, Attire: r.Attire }, ['When', 'Location', 'Attire'])}${r.Summary ? `<p class="rc-p">${esc(r.Summary)}</p>` : ''}</li>`);
   const pair = (rows, a, b) => rows.map(r => `<li><span>${esc(r[a])}</span>${r[b] ? `<span class="rc-who">${esc(r[b])}</span>` : ''}</li>`);
   const album = safeUrl(s.AlbumLink);
-  const secret = [s.GiftBudget ? `Gift amount: ${s.GiftBudget}` : '', s.ExchangeDate ? `Exchanged ${fmtDate(s.ExchangeDate, true)}` : ''].filter(Boolean);
+  const exchanges = (D.Exchanges || []).map(x => `<li><div class="rc-name">${esc(x.Name)}</div>${meta({ Budget: x.Budget ? 'Gift amount ' + x.Budget : '', When: x.ExchangeDate ? 'Exchanged ' + fmtDate(x.ExchangeDate, true) : '' }, ['Budget', 'When'])}</li>`);
+  const secret = exchanges.length ? [] : [s.GiftBudget ? `Gift amount: ${s.GiftBudget}` : '', s.ExchangeDate ? `Exchanged ${fmtDate(s.ExchangeDate, true)}` : ''].filter(Boolean);
+  const gifts = (D.Donations || []).map(d => `<li><span>${esc(d.Kind === 'Money' || (!d.Items && d.Amount) ? fmtMoney(money(d.Amount)) : d.Items)}${d.Project ? ` <span class="rc-who">· ${esc(d.Project)}</span>` : ''}</span>${d.Soror ? `<span class="rc-who">${esc(d.Soror)}</span>` : ''}</li>`);
+  const goals = (D.Goals || []).map(g => goalHTML(g, true)).join('');
   const stay = [s.Lodging, s.Address].filter(Boolean);
   const stats = [[partial ? 0 : came.length, 'Attended'], [itin.length, 'On the itinerary'], [(D.Service || []).length, 'Service projects']].filter(x => x[0]);
 
@@ -911,10 +1001,10 @@ function recapHTML(s) {
         ${block('Achievements that year', yearAch.length ? achBanners(yearAch) + list(yearAch.filter(a => a.Scope !== 'Line').map(a => `<li><div class="rc-name">${esc(a.Title)}</div><div class="meta"><span>${esc(a.Soror)}</span>${a.Level ? `<span>${esc(a.Level)}</span>` : ''}<span>${esc(achWhen(a))}</span></div></li>`)) : '')}
         ${block('Where we stayed', stay.length ? `<div class="rc-name">${esc(stay[0])}</div>${stay[1] ? `<div class="meta">${esc(stay[1])}</div>` : ''}` : '')}
         ${block('Service & scholarship', list(service))}
-        ${block('Donation sign-up', list(pair(D.Signup || [], 'Item', 'Soror')))}
-        ${block('Secret Soror', secret.length ? `<p class="rc-p">${secret.map(esc).join('<br>')}</p>` : '')}
+        ${block('Donations', (goals ? `<div class="goals">${goals}</div>` : '') + list(gifts))}
+        ${block('Secret Soror', exchanges.length ? list(exchanges) : secret.length ? `<p class="rc-p">${secret.map(esc).join('<br>')}</p>` : '')}
         ${block('Games & entertainment', list(pair(D.Games || [], 'Name', 'Soror')))}
-        ${block('What we brought', list(pair(D.Bring || [], 'Item', 'Soror')))}
+        ${block('What we brought', list((D.Bring || []).map(r => `<li><span>${esc(r.Item)}${r.Purpose ? ` <span class="rc-who">· ${esc(r.Purpose)}</span>` : ''}</span>${r.Soror ? `<span class="rc-who">${esc(r.Soror)}</span>` : ''}</li>`)))}
         ${block('Rooms', list(pair(D.Rooms || [], 'Room', 'Sorors')))}
         ${block('Comments for the next meeting', list((D.Feedback || []).map(r => `<li><div class="rc-quote">“${esc(r.Comment)}”</div>${r.Soror ? `<div class="meta">— ${esc(r.Soror)}</div>` : ''}</li>`)))}
         ${block('Photos', album ? `<a href="${esc(album)}" target="_blank" rel="noopener">Open the shared album ↗</a>` : '')}
@@ -928,17 +1018,43 @@ function recapHTML(s) {
 function settingsBlock(name, s) {
   const fields = SETTINGS[name];
   const ek = `set-${name}:${s.id}`;
-  if (state.edits[ek]) return editorHTML(ek, fields, state.edits[ek], 'Edit details', false);
+  const mine = isOrganizer();
+  if (state.edits[ek] && mine) return editorHTML(ek, fields, state.edits[ek], 'Edit Details', false);
   const items = fields.map(f => {
     let v = s[f.k];
     if (f.type === 'date') v = fmtDate(v, true);
+    if (f.type === 'time') v = fmtTime(v);
     const shown = !v ? '<span class="dash">—</span>'
       : f.type === 'url' ? (safeUrl(v) ? `<a href="${esc(safeUrl(v))}" target="_blank" rel="noopener">Open link ↗</a>` : esc(v))
       : esc(v).replace(/\n/g, '<br>');
     return `<div class="item${f.full ? ' full' : ''}"><div class="k">${esc(f.label)}</div><div class="v">${shown}</div></div>`;
   }).join('');
+  if (!mine) return `<div class="kv">${items}</div>${requestHTML(SETTINGS_SECTION[name])}`;
   return `<div class="kv clickable" data-act="edit-set" data-b="${name}" title="Click to edit">${items}</div>
-    <div class="kv-acts"><button class="btn ghost sm" data-act="edit-set" data-b="${name}">Edit details</button></div>`;
+    <div class="kv-acts"><button class="btn ghost sm" data-act="edit-set" data-b="${name}">Edit Details</button></div>`;
+}
+
+/* ----- Change requests (from any soror to the organizer) ----- */
+function requestHTML(section) {
+  if (isOrganizer() || !state.me) return '';
+  const ek = Object.keys(state.edits).find(k => k.startsWith('requests:') && state.edits[k].__new && state.edits[k].Section === section);
+  if (ek) return editorHTML(ek, BLOCKS.requests.fields.filter(f => f.k !== 'Section'), state.edits[ek], `Request a change · ${section}`, true, 'Send Request');
+  return `<div class="req-row"><span>Managed by Soror ${esc(CONFIG.ORGANIZER)}.</span><button class="link-btn" data-act="request" data-section="${esc(section)}">Request a Change</button></div>`;
+}
+
+/* ----- Donation goals ----- */
+function goalTotal(project) {
+  const key = String(project || '').trim().toLowerCase();
+  return (state.data.Donations || []).filter(d => String(d.Project || '').trim().toLowerCase() === key && d.Kind !== 'Items')
+    .reduce((a, d) => a + money(d.Amount), 0);
+}
+function goalHTML(r, readOnly) {
+  const goal = money(r.Goal), got = goalTotal(r.Project);
+  const pct = goal ? Math.min(100, Math.round(got / goal * 100)) : 0;
+  const acts = !readOnly && canEdit('goals', r) ? `<div class="acts"><button class="link-btn" data-act="edit" data-b="goals" data-id="${esc(r.id)}">Edit</button><button class="link-btn danger" data-act="del" data-b="goals" data-id="${esc(r.id)}">Remove</button></div>` : '';
+  return `<div class="goal"><div class="goal-top"><div class="goal-name">${esc(r.Project)}</div>${acts}</div>
+    <div class="goal-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
+    <div class="goal-num"><b>${fmtMoney(got)}</b> of ${fmtMoney(goal)} · ${pct}%</div></div>`;
 }
 
 /* ----- Lists ----- */
@@ -992,7 +1108,7 @@ function listBlock(name) {
   if (!rows.length && !drafts.length) {
     html += `<div class="empty">${b.fixed === 'attending' ? 'No one is marked Attending or Maybe yet. Update RSVPs in Who’s Coming.' : (b.emptyText ? b.emptyText() : 'Nothing here yet.')}</div>`;
   } else if (rows.length) {
-    html += `<div class="rows" style="--cols:${tmpl}"><div class="row head">${cols.map(c => `<div>${esc(c.label || labelOf(b, c.k))}</div>`).join('')}<div></div></div>`;
+    html += b.rowRender ? `<div class="goals">` : `<div class="rows" style="--cols:${tmpl}"><div class="row head">${cols.map(c => `<div>${esc(c.label || labelOf(b, c.k))}</div>`).join('')}<div></div></div>`;
     let lastGroup = null;
     rows.forEach(r => {
       if (b.groupFn) {
@@ -1004,12 +1120,12 @@ function listBlock(name) {
       }
       const ek = `${name}:${r.id}`;
       if (state.edits[ek]) { html += editorHTML(ek, b.fields, state.edits[ek], b.fixed ? r.Soror : `Edit ${b.noun}`, false); return; }
-      html += rowHTML(name, b, r);
+      html += b.rowRender ? b.rowRender(r) : rowHTML(name, b, r);
     });
     html += `</div>`;
   }
-  drafts.forEach(ek => { html += editorHTML(ek, b.fields, state.edits[ek], `New ${b.noun}`, true); });
-  if (!b.fixed) html += `<div class="add-row"><button class="btn ghost" data-act="add" data-b="${name}">+ Add ${esc(b.noun)}</button></div>`;
+  if (name !== 'requests') drafts.forEach(ek => { html += editorHTML(ek, b.fields, state.edits[ek], `New ${b.noun}`, true); });
+  if (canAdd(name) && name !== 'requests') html += `<div class="add-row"><button class="btn ghost" data-act="add" data-b="${name}">+ Add ${esc(b.noun)}</button></div>`;
   return html;
 }
 
@@ -1024,7 +1140,7 @@ function cellValue(b, c, r) {
   if (f.type === 'month') return esc(fmtMonth(v));
   if (f.type === 'time') return esc(fmtTime(v));
   if (c.badge) {
-    const cls = ['Attending', 'Booked', 'Done', 'Yes'].includes(v) ? 'good' : ['Maybe', 'Planned'].includes(v) ? 'warm' : ['Skipped', 'Not attending', 'No', 'Idea'].includes(v) ? 'dim' : '';
+    const cls = ['Attending', 'Booked', 'Done', 'Yes'].includes(v) ? 'good' : ['Maybe', 'Planned', 'Open'].includes(v) ? 'warm' : ['Skipped', 'Not Attending', 'Not attending', 'No', 'Idea'].includes(v) ? 'dim' : '';
     return `<span class="badge ${cls}">${esc(v)}</span>`;
   }
   return c.plain ? esc(v).replace(/\n/g, '<br>') : esc(v);
@@ -1050,9 +1166,11 @@ function rowHTML(name, b, r) {
     }
     return `<div class="cell" data-label="${esc(c.label || labelOf(b, c.k))}">${inner}</div>`;
   }).join('');
-  if (r.__ro) return `<div class="row">${cells}<div class="acts"></div></div>`;
+  if (r.__ro || !canEdit(name, r)) return `<div class="row">${cells}<div class="acts"></div></div>`;
   const isEmptyFixed = b.fixed && !b.fields.some(f => r[f.k]);
-  const acts = `<button class="link-btn" data-act="edit" data-b="${name}" data-id="${esc(r.id)}">${isEmptyFixed ? 'Fill in' : 'Edit'}</button>`
+  const acts = (name === 'requests'
+      ? (r.Status !== 'Done' ? `<button class="link-btn" data-act="req-done" data-id="${esc(r.id)}">Mark Done</button>` : '')
+      : `<button class="link-btn" data-act="edit" data-b="${name}" data-id="${esc(r.id)}">${isEmptyFixed ? 'Fill In' : 'Edit'}</button>`)
     + (b.fixed ? '' : `<button class="link-btn danger" data-act="del" data-b="${name}" data-id="${esc(r.id)}">Remove</button>`);
   return `<div class="row">${cells}<div class="acts">${acts}</div></div>`;
 }
@@ -1062,8 +1180,9 @@ function linkify(text) {
 }
 
 /* ----- Editor form (used for new entries and edits) ----- */
-function editorHTML(ek, fields, vals, title, isDraft) {
+function editorHTML(ek, fields, vals, title, isDraft, saveLabel) {
   const roster = activeRoster();
+  fields = fields.filter(f => !f.organizerOnly || isOrganizer());
   const input = f => {
     const v = vals[f.k] == null ? '' : vals[f.k];
     const a = `data-ek="${esc(ek)}" data-k="${f.k}" id="${esc(ek + '-' + f.k)}"`;
@@ -1072,7 +1191,11 @@ function editorHTML(ek, fields, vals, title, isDraft) {
       let opts = f.type === 'soror' ? roster.concat(f.group ? ['Group'] : [])
         : f.type === 'sororAll' ? state.roster.slice().sort((a, c) => lineNum(a.Name) - lineNum(c.Name)).map(p => p.Name) : f.options;
       if (v && !opts.includes(v)) opts = opts.concat([v]);
-      return `<select ${a}><option value="">${f.type === 'soror' || f.type === 'sororAll' ? 'Choose a soror' : 'Choose…'}</option>${opts.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+      return `<select ${a}><option value="">${f.type === 'soror' || f.type === 'sororAll' ? 'Choose a Soror' : 'Choose One'}</option>${opts.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+    }
+    if (f.type === 'suggest') {
+      const list = Array.from(new Set((state.data.Goals || []).map(g => g.Project).concat((state.data.Service || []).map(x => x.Project)).filter(Boolean)));
+      return `<input type="text" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}" list="${esc(ek)}-list"><datalist id="${esc(ek)}-list">${list.map(o => `<option value="${esc(o)}">`).join('')}</datalist>`;
     }
     const t = f.type === 'date' ? 'date' : f.type === 'time' ? 'time' : f.type === 'url' ? 'url' : f.type === 'month' ? 'month' : 'text';
     return `<input type="${t}" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}">`;
@@ -1080,7 +1203,7 @@ function editorHTML(ek, fields, vals, title, isDraft) {
   return `<div class="editor${isDraft ? ' draft' : ''}">
     <div class="editor-label">${esc(title)}</div>
     <div class="fgrid">${fields.map(f => `<div class="field${f.full ? ' full' : ''}"><label for="${esc(ek + '-' + f.k)}">${esc(f.label)}${f.req ? ' *' : ''}</label>${input(f)}</div>`).join('')}</div>
-    <div class="ed-acts"><button class="link-btn" data-act="cancel" data-ek="${esc(ek)}">Cancel</button><button class="btn" data-act="save" data-ek="${esc(ek)}">${isDraft ? 'Add' : 'Save'}</button></div>
+    <div class="ed-acts"><button class="link-btn" data-act="cancel" data-ek="${esc(ek)}">Cancel</button><button class="btn" data-act="save" data-ek="${esc(ek)}">${esc(saveLabel || (isDraft ? 'Add' : 'Save'))}</button></div>
   </div>`;
 }
 
@@ -1092,13 +1215,15 @@ function startEdit(name, id) {
   state.edits[`${name}:${id}`] = vals;
   render(); focusEditor(`${name}:${id}`);
 }
-function startAdd(name) {
+function startAdd(name, extra) {
   const b = BLOCKS[name]; const id = uid();
   const vals = { __new: true }; b.fields.forEach(f => { vals[f.k] = ''; });
-  if (name === 'collections') vals.Paid = 'No';
   if (name === 'itinerary') vals.Status = 'Idea';
-  if (name === 'roster') vals.Active = 'Yes';
-  if (name === 'achievements') { vals.Category = 'Delta'; vals.Scope = 'Individual'; if (state.ach.soror) vals.Soror = state.ach.soror; }
+  if (name === 'exchanges') vals.Name = 'Deltaversary';
+  if (name === 'donations') { vals.Kind = 'Money'; vals.Soror = state.me; }
+  if (name === 'bring') vals.Soror = state.me;
+  if (name === 'achievements') { vals.Category = 'Delta'; vals.Scope = 'Individual'; vals.Soror = state.ach.soror || state.me; }
+  Object.assign(vals, extra || {});
   state.edits[`${name}:${id}`] = vals;
   render(); focusEditor(`${name}:${id}`);
 }
@@ -1134,8 +1259,17 @@ async function save(ek) {
     const problem = achievementProblem(row);
     if (problem) { toast(problem); focusEditor(ek); return; }
     if (row.Scope === 'Line') row.Soror = '';
+    if (!row.AddedBy) row.AddedBy = state.me;
   }
-  if (name === 'roster' && !row.Active) row.Active = 'Yes';
+  if (name === 'donations') {
+    if (!isOrganizer() || !row.Soror) row.Soror = row.Soror && isOrganizer() ? row.Soror : (base.Soror || state.me);
+    if (row.Kind === 'Money' && !money(row.Amount)) { toast('Please enter the amount.'); focusEditor(ek); return; }
+    if (row.Kind === 'Items' && !String(row.Items || '').trim()) { toast('Please list the items.'); focusEditor(ek); return; }
+  }
+  if (name === 'goals' && !money(row.Goal)) { toast('Please enter the goal amount.'); focusEditor(ek); return; }
+  if (name === 'requests') { row.From = row.From || state.me; row.Status = row.Status || 'Open'; }
+  if (blk && blk.own && !base[blk.own] && blk.own !== 'EditedBy') row[blk.own] = row[blk.own] || state.me;
+  row.EditedBy = state.me;
   const before = tabRows(tab).slice();
   const i = before.findIndex(r => r.id === id);
   const next = before.slice(); if (i >= 0) next[i] = row; else next.push(row);
@@ -1146,6 +1280,7 @@ async function save(ek) {
     state.pending++; setSync('Saving…');
     await api({ action: 'upsert', tab, row });
     state.pending--; setSync(state.pending ? 'Saving…' : 'Saved');
+    if (name === 'requests' && !isOrganizer()) toast(`Sent to Soror ${CONFIG.ORGANIZER}. Thank you!`);
   } catch (err) {
     state.pending--; setSync('');
     setTabRows(tab, before); state.edits[ek] = pendingEdit; render();
@@ -1156,7 +1291,7 @@ async function save(ek) {
 async function remove(name, id) {
   const b = BLOCKS[name];
   const r = tabRows(b.tab).find(x => x.id === id);
-  const label = r ? (b.cols ? r[b.cols[0].k] : r.Caption) || '' : '';
+  const label = r ? (r.Caption || r.Items || r.Project || r.Event || r.Title || r.Item || r.Name || r.Room || r.Text || '') : '';
   if (!confirm(`Remove ${label ? '“' + String(label).slice(0, 60) + '”' : 'this ' + b.noun}?`)) return;
   const before = tabRows(b.tab).slice();
   setTabRows(b.tab, before.filter(x => x.id !== id)); render();
@@ -1164,6 +1299,13 @@ async function remove(name, id) {
   catch (err) { setTabRows(b.tab, before); render(); handleErr(err, 'Couldn’t remove'); }
 }
 
+async function markRequestDone(id) {
+  const before = tabRows('Requests').slice(); const r = before.find(x => x.id === id); if (!r) return;
+  const row = Object.assign({}, r, { Status: 'Done', EditedBy: state.me });
+  setTabRows('Requests', before.map(x => x.id === id ? row : x)); render();
+  try { await api({ action: 'upsert', tab: 'Requests', row }); setSync('Saved'); }
+  catch (err) { setTabRows('Requests', before); render(); handleErr(err, 'Couldn’t update'); }
+}
 function splitKey(ek) { const i = ek.indexOf(':'); return [ek.slice(0, i), ek.slice(i + 1)]; }
 function handleErr(err, prefix) {
   if (err.message === 'auth') { toast('The passphrase has changed. Please sign in again.'); setTimeout(signOut, 1800); return; }
@@ -1177,7 +1319,7 @@ async function switchYear(y) {
   try { await loadYear(y); window.scrollTo({ top: 0 }); } catch (err) { handleErr(err, 'Couldn’t load ' + y); }
 }
 async function newYear(y) {
-  if (!confirm(`Start planning Deltaversary ${y}? Secret Soror, games night, the RCC scholarship and a service project will be added as starting points.`)) return;
+  if (!confirm(`Start planning Deltaversary ${y}? A Deltaversary Secret Soror exchange, games night, the RCC scholarship with its $500 goal and a service project will be added as starting points.`)) return;
   state.edits = {};
   $('#main').innerHTML = '<div class="loading">Setting up ' + esc(y) + '…</div>';
   try { const j = await api({ action: 'newYear', year: y }); applyLoad(j); render(); }
@@ -1203,6 +1345,11 @@ document.addEventListener('click', e => {
   else if (act === 'newyear') newYear(t.dataset.year);
   else if (act === 'refresh') refresh(false);
   else if (act === 'signout') signOut();
+  else if (act === 'switch') { if (!hasUnsaved() || confirm('You have unsaved changes. Switch anyway?')) { state.edits = {}; showWho(); } }
+  else if (act === 'pick-me') pickMe(t.dataset.name);
+  else if (act === 'request') startAdd('requests', { Section: t.dataset.section });
+  else if (act === 'req-done') markRequestDone(t.dataset.id);
+  else if (act === 'banner') $('#banner-input').click();
   else if (act === 'upload') $('#photo-input').click();
   else if (act === 'zoom') openLightbox(+t.dataset.i);
   else if (act === 'lb-go') openLightbox(+$('#lightbox').dataset.i + +t.dataset.d);
@@ -1219,6 +1366,7 @@ document.addEventListener('change', e => {
   const el = $('#achievements'); if (el) el.scrollIntoView({ block: 'start' });
 });
 document.addEventListener('change', onField);
+$('#banner-input').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) uploadBanner(f); e.target.value = ''; });
 $('#photo-input').addEventListener('change', e => { const f = e.target.files; if (f && f.length) uploadPhotos(f); e.target.value = ''; });
 document.addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
 document.addEventListener('keydown', e => {
