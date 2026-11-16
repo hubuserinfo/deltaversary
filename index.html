@@ -447,7 +447,7 @@ const BLOCKS = {
       { k: 'ArriveTime', label: 'Arrival Time', type: 'time' },
       { k: 'ArriveMode', label: 'Getting There', type: 'select', options: MODES },
       { k: 'ArriveDetails', label: 'Flight # / Details' },
-      { k: 'DepartDay', label: 'Departure Date', type: 'date' },
+      { k: 'DepartDay', label: 'Departure Date', type: 'date', after: 'ArriveDay' },
       { k: 'DepartTime', label: 'Departure Time', type: 'time' },
       { k: 'DepartMode', label: 'Heading Home', type: 'select', options: MODES },
       { k: 'DepartDetails', label: 'Flight # / Details' }
@@ -486,7 +486,7 @@ const BLOCKS = {
     ],
     cols: [
       { k: 'Title', w: '2.6fr', primary: true, meta: ['Type', 'Level', 'Role', 'Notes', 'Link'] },
-      { k: 'Soror', w: '1.2fr', render: r => sororCell(r.Soror) },
+      { k: 'Soror', w: '1.2fr', render: r => sororCell(r.Soror, r) },
       { k: 'Category', w: '.8fr', badge: true, label: 'Delta / Personal' },
       { k: 'When', w: '1fr', label: 'When', render: r => esc(achWhen(r)) }
     ]
@@ -864,10 +864,14 @@ function achievementProblem(r) {
   if (!r.Date && !r.StartYear) return 'Add the month it happened, or the year she started serving.';
   return '';
 }
-function sororCell(name) {
+// On an achievement, the "In memory" tag appears only for honors from her memorial year on,
+// never on one she received while she was with us.
+function sororCell(name, ach) {
   if (!name) return '<span class="dash">—</span>';
   const p = sororInfo(name);
-  return `${esc(name)}${remembered(p) ? '<span class="mem-tag">In memory</span>' : ''}${lineLabel(p) ? `<div class="meta">${esc(lineLabel(p))}</div>` : ''}`;
+  const year = ach ? +achYear(ach) : 0;
+  const tag = remembered(p) && (!ach || !p.MemorialFrom || year >= +p.MemorialFrom);
+  return `${esc(name)}${tag ? '<span class="mem-tag">In memory</span>' : ''}${lineLabel(p) ? `<div class="meta">${esc(lineLabel(p))}</div>` : ''}`;
 }
 function achBanners(list) {
   return list.filter(a => a.Scope === 'Line').map(a => `<div class="ach-banner"><div class="eyebrow">${esc(CONFIG.LINE_NAME)} · ${esc(achWhen(a))}</div><div class="ach-title">${esc(a.Title)}</div>${a.Notes ? `<div class="ach-note">${esc(a.Notes)}</div>` : ''}</div>`).join('');
@@ -1201,7 +1205,8 @@ function editorHTML(ek, fields, vals, title, isDraft, saveLabel) {
       return `<input type="text" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}" list="${esc(ek)}-list"><datalist id="${esc(ek)}-list">${list.map(o => `<option value="${esc(o)}">`).join('')}</datalist>`;
     }
     const t = f.type === 'date' ? 'date' : f.type === 'time' ? 'time' : f.type === 'url' ? 'url' : f.type === 'month' ? 'month' : 'text';
-    return `<input type="${t}" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}">`;
+    const min = f.after && vals[f.after] ? ` min="${esc(vals[f.after])}"` : '';
+    return `<input type="${t}" ${a}${min} value="${esc(v)}" placeholder="${esc(f.ph || '')}">`;
   };
   return `<div class="editor${isDraft ? ' draft' : ''}">
     <div class="editor-label">${esc(title)}</div>
@@ -1269,6 +1274,7 @@ async function save(ek) {
     if (row.Kind === 'Money' && !money(row.Amount)) { toast('Please enter the amount.'); focusEditor(ek); return; }
     if (row.Kind === 'Items' && !String(row.Items || '').trim()) { toast('Please list the items.'); focusEditor(ek); return; }
   }
+  if (row.ArriveDay && row.DepartDay && row.DepartDay < row.ArriveDay) { toast('The departure date can’t be before the arrival date.'); focusEditor(ek); return; }
   if (name === 'goals' && !money(row.Goal)) { toast('Please enter the goal amount.'); focusEditor(ek); return; }
   if (name === 'requests') { row.From = row.From || state.me; row.Status = row.Status || 'Open'; }
   if (blk && blk.own && !base[blk.own] && blk.own !== 'EditedBy') row[blk.own] = row[blk.own] || state.me;
@@ -1358,9 +1364,23 @@ document.addEventListener('click', e => {
   else if (act === 'lb-go') openLightbox(+$('#lightbox').dataset.i + +t.dataset.d);
   else if (act === 'lb-close') closeLightbox();
 });
+// Departure can't be before arrival. When arrival is chosen, departure starts at the trip's last day
+// (or the arrival day, if she arrives after the trip ends), so the calendar opens in the right month.
+function syncDeparture(ek, arrive) {
+  const vals = state.edits[ek]; if (!vals || !('DepartDay' in vals)) return;
+  const input = document.querySelector(`[data-ek="${CSS.escape(ek)}"][data-k="DepartDay"]`);
+  if (input) input.min = arrive || '';
+  if (!arrive) return;
+  if (!vals.DepartDay || vals.DepartDay < arrive) {
+    const end = settingsRow().EndDate;
+    vals.DepartDay = end && end >= arrive ? end : arrive;
+    if (input) input.value = vals.DepartDay;
+  }
+}
 function onField(e) {
   const t = e.target; if (!t.dataset || !t.dataset.ek || !t.dataset.k) return;
   if (state.edits[t.dataset.ek]) state.edits[t.dataset.ek][t.dataset.k] = t.value;
+  if (t.dataset.k === 'ArriveDay' && e.type === 'change') syncDeparture(t.dataset.ek, t.value);
 }
 document.addEventListener('input', onField);
 document.addEventListener('change', e => {
