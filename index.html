@@ -119,7 +119,30 @@
   .kv .item.full { grid-column: 1 / -1; }
   .kv .k { font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
   .kv .v { font-family: var(--serif); font-size: 20px; line-height: 1.3; margin-top: 2px; overflow-wrap: anywhere; }
-  .kv-acts { display: flex; justify-content: flex-end; margin-top: 10px; }
+  .kv-acts { display: flex; justify-content: flex-end; margin-top: 14px; }
+  .kv.clickable { cursor: pointer; }
+  .kv.clickable .item:hover .v, .kv.clickable .item:hover .dash { color: var(--crimson); }
+  .btn.sm { padding: 8px 16px; font-size: 11px; }
+
+  /* Recap (past years) */
+  .recap-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 44px; }
+  .rc-block + .rc-block { margin-top: 6px; }
+  .rc-block h3.sub { margin-top: 26px; }
+  .recap-grid > div > .rc-block:first-child h3.sub { margin-top: 0; }
+  .rc-day { font-family: var(--serif); font-style: italic; font-size: 21px; color: var(--crimson); margin: 18px 0 4px; }
+  .rc-ev { display: grid; grid-template-columns: 80px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .rc-time { font-size: 13px; color: var(--muted); padding-top: 4px; }
+  .rc-name { font-family: var(--serif); font-size: 19px; font-weight: 500; line-height: 1.3; }
+  .rc-list { list-style: none; margin: 0; padding: 0; }
+  .rc-list li { padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .rc-list li > div { flex: 1 1 100%; }
+  .rc-who { color: var(--muted); font-size: 14px; }
+  .rc-p { margin: 6px 0 0; color: var(--ink); font-size: 15px; }
+  .rc-quote { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.4; }
+  .rc-names { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rc-chip { padding: 5px 12px; border: 1px solid var(--line); background: var(--cream); font-size: 14px; }
+  .rc-lead { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--ink); margin: 0 0 26px; max-width: 70ch; }
+  .rc-note { margin: 36px 0 0; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; font-size: 13px; color: var(--muted); }
 
   /* Wish list cards */
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
@@ -132,7 +155,7 @@
 
   /* Overview */
   .overview-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px; }
-  .wx { border: 1px solid var(--line); padding: 20px 22px; background: var(--cream); }
+  .wx { border: 1px solid var(--line); padding: 20px 22px; background: var(--cream); align-self: start; }
   .wx h4 { margin: 0 0 12px; font-size: 10.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--crimson); }
   .wx .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; }
   .wx .d { text-align: center; padding: 8px 4px; background: var(--paper); border: 1px solid var(--line); }
@@ -159,6 +182,39 @@
   footer { text-align: center; padding: 10px 16px 50px; color: var(--muted); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
   footer .serif { font-family: var(--serif); font-style: italic; font-size: 18px; letter-spacing: 0; text-transform: none; display: block; margin-bottom: 6px; color: var(--crimson); }
 
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .ph { margin: 0; }
+  .ph-img { display: block; width: 100%; padding: 0; border: 0; background: var(--cream-2); cursor: zoom-in; aspect-ratio: 4 / 3; overflow: hidden; }
+  .ph-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+  .ph-img:hover img { transform: scale(1.03); }
+  .ph figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 8px 2px 0; font-family: var(--serif); font-style: italic; font-size: 16px; line-height: 1.35; }
+  .ph-acts { display: flex; gap: 8px; font-style: normal; }
+  .up-status { margin-left: 14px; font-size: 13px; color: var(--muted); }
+  .rc-photos { margin: 0 0 30px; }
+  .rc-highlights { margin: 0 0 30px; }
+  .rc-highlights ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 44px; }
+  .rc-highlights li { break-inside: avoid; padding: 10px 0 10px 22px; position: relative; font-family: var(--serif); font-size: 19px; line-height: 1.35; border-bottom: 1px solid var(--line); }
+  .rc-highlights li::before { content: ''; position: absolute; left: 2px; top: 19px; width: 8px; height: 8px; background: var(--crimson); transform: rotate(45deg); }
+  #lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(30, 12, 15, .94); display: grid; place-items: center; padding: 56px 16px 24px; }
+  #lightbox figure { margin: 0; max-width: 1200px; text-align: center; }
+  #lightbox img { max-width: 100%; max-height: calc(100vh - 140px); object-fit: contain; display: block; margin: 0 auto; }
+  #lightbox figcaption { color: var(--cream); font-family: var(--serif); font-style: italic; font-size: 19px; margin-top: 12px; }
+  #lightbox figcaption span { display: block; font-family: var(--sans); font-style: normal; font-size: 11px; letter-spacing: .2em; color: #CDB3AA; margin-top: 4px; }
+  .lb-x, .lb-nav { position: absolute; border: 0; background: none; color: var(--cream); font-size: 40px; line-height: 1; cursor: pointer; padding: 10px 14px; }
+  .lb-x { top: 8px; right: 12px; }
+  .lb-nav.prev { left: 6px; top: 50%; transform: translateY(-50%); }
+  .lb-nav.next { right: 6px; top: 50%; transform: translateY(-50%); }
+  .ach-filters { display: flex; gap: 14px 22px; flex-wrap: wrap; margin: 0 0 22px; }
+  .ach-filters label { font-size: 10.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .ach-filters select { padding: 8px 10px; border: 1px solid var(--line); background: var(--paper); font-size: 14px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  .ach-banner { background: var(--crimson); color: var(--cream); padding: 22px 26px; margin: 0 0 18px; background-image: radial-gradient(ellipse at 100% 0%, #B42A42 0%, var(--crimson) 60%); }
+  .ach-banner .eyebrow { color: #EBCFC5; }
+  .ach-title { font-family: var(--serif); font-size: 30px; font-weight: 500; line-height: 1.15; margin-top: 6px; }
+  .ach-note { margin-top: 6px; color: #F2DED6; font-size: 15px; }
+  .ach-profile { border: 1px solid var(--line); background: var(--cream); padding: 18px 22px; margin: 0 0 18px; }
+  .ach-name { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+  .ach-roles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .rc-muted { color: var(--muted); font-size: 13px; }
   #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0; background: var(--ink); color: var(--cream); padding: 12px 20px; font-size: 14px; max-width: calc(100% - 32px); transition: all .25s; z-index: 50; pointer-events: none; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .loading { text-align: center; padding: 80px 16px; font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--muted); }
@@ -166,7 +222,9 @@
   @media (max-width: 760px) {
     .section { padding: 28px 18px; }
     .sec-head h2 { font-size: 30px; }
-    .overview-grid { grid-template-columns: 1fr; gap: 24px; }
+    .overview-grid, .recap-grid { grid-template-columns: 1fr; gap: 24px; }
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .rc-highlights ul { columns: 1; }
     .row { grid-template-columns: 1fr; gap: 4px; padding: 14px 2px; }
     .row.head { display: none; }
     .cell[data-label]:not(.primary):not(:empty)::before { content: attr(data-label) ': '; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
@@ -201,13 +259,14 @@
   <footer id="footer"></footer>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="photo-input" accept="image/*" multiple hidden>
 
 <script>
 /* =========================================================
    CONFIG — paste your Apps Script Web app URL here
    ========================================================= */
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbx8kwDL-fy4cKsg62GLgaZPH0vKfRi6c5SlS2qDbQcfunxlzkPCmvdb4V4QioAyVdSF/exec',
+  API_URL: 'PASTE_YOUR_WEB_APP_URL_HERE',
   LINE_NAME: '4x4 Perfect Timing',
   CHAPTER: 'Lumberton Alumnae Chapter',
   LINE_SEASON: 'Spring 2022'
@@ -339,6 +398,40 @@ const BLOCKS = {
       { k: 'Depart', w: '2fr', label: 'Departing', render: r => trip(r.DepartDay, r.DepartTime, r.DepartMode, r.DepartDetails) }
     ]
   },
+  highlights: {
+    tab: 'Highlights', noun: 'highlight',
+    fields: [{ k: 'Text', label: 'Highlight', type: 'textarea', req: true, full: true, ph: 'A moment worth remembering…' }],
+    cols: [{ k: 'Text', w: '1fr', primary: true, plain: true }]
+  },
+  photos: {
+    tab: 'Photos', noun: 'photo',
+    fields: [{ k: 'Caption', label: 'Caption', full: true, ph: 'Who, where, what was happening' }]
+  },
+  achievements: {
+    tab: 'Achievements', global: true, noun: 'achievement',
+    rowsFn: () => achievementRows(), groupFn: r => achYear(r) || 'Undated', sortedByFn: true,
+    fields: [
+      { k: 'Category', label: 'Delta or personal', type: 'select', options: ['Delta', 'Personal'], req: true },
+      { k: 'Scope', label: 'For', type: 'select', options: ['Individual', 'Line'] },
+      { k: 'Soror', label: 'Soror', type: 'sororAll' },
+      { k: 'Type', label: 'Type', type: 'select', options: ['Award', 'Committee', 'Board', 'Office', 'Degree', 'Promotion', 'New role', 'Certification', 'Milestone', 'Other'] },
+      { k: 'Title', label: 'Achievement', req: true, full: true, ph: 'e.g. Soror of the Year, Master’s degree, Social Action Committee' },
+      { k: 'Level', label: 'Level or organization', ph: 'Chapter, Regional, National, a school or employer' },
+      { k: 'Role', label: 'Role', ph: 'Chair, Co-chair, Member…' },
+      { k: 'Date', label: 'Month (one-time achievements)', type: 'month' },
+      { k: 'StartYear', label: 'Served from (year)', ph: 'For committees, boards, offices' },
+      { k: 'EndYear', label: 'Served through', ph: 'A year, or "present"' },
+      { k: 'Link', label: 'Link (optional)', type: 'url' },
+      { k: 'AddedBy', label: 'Who is adding this', type: 'sororAll', req: true },
+      { k: 'Notes', label: 'Notes', type: 'textarea', full: true }
+    ],
+    cols: [
+      { k: 'Title', w: '2.6fr', primary: true, meta: ['Type', 'Level', 'Role', 'Notes', 'Link'] },
+      { k: 'Soror', w: '1.2fr', render: r => sororCell(r.Soror) },
+      { k: 'Category', w: '.8fr', badge: true, label: 'Delta / Personal' },
+      { k: 'When', w: '1fr', label: 'When', render: r => esc(achWhen(r)) }
+    ]
+  },
   feedback: {
     tab: 'Feedback', noun: 'comment',
     fields: [
@@ -397,11 +490,13 @@ const SECTIONS = [
   { id: 'lodging', title: 'Lodging' },
   { id: 'collections', title: 'Collections' },
   { id: 'travel', title: 'Travel' },
+  { id: 'achievements', title: 'Achievements' },
   { id: 'memories', title: 'Memories & Feedback' }
 ];
 
 /* ---------------- State ---------------- */
-const state = { key: '', year: '', settings: [], roster: [], data: {}, edits: {}, pending: 0, loaded: false };
+const state = { key: '', year: '', settings: [], roster: [], achievements: [], data: {}, edits: {}, pending: 0, loaded: false,
+  ach: { range: 'since', cat: '', soror: '' } };
 
 /* ---------------- Helpers ---------------- */
 const $ = s => document.querySelector(s);
@@ -453,8 +548,8 @@ function memorialHTML() {
   const m = memorialRoster(); if (!m.length) return '';
   return `<div class="memoriam"><div class="eyebrow">In Memory Of</div>${m.map(r => `<div class="mem-name">Soror ${esc(r.FullName || r.Name)}</div>${lineLabel(r) ? `<div class="mem-line">${esc(lineLabel(r))}</div>` : ''}`).join('')}</div>`;
 }
-function tabRows(tab) { return tab === 'Roster' ? state.roster : tab === 'Settings' ? state.settings : (state.data[tab] || []); }
-function setTabRows(tab, rows) { if (tab === 'Roster') state.roster = rows; else if (tab === 'Settings') state.settings = rows; else state.data[tab] = rows; }
+function tabRows(tab) { return tab === 'Roster' ? state.roster : tab === 'Settings' ? state.settings : tab === 'Achievements' ? state.achievements : (state.data[tab] || []); }
+function setTabRows(tab, rows) { if (tab === 'Roster') state.roster = rows; else if (tab === 'Settings') state.settings = rows; else if (tab === 'Achievements') state.achievements = rows; else state.data[tab] = rows; }
 
 /* ---------------- API ---------------- */
 async function api(payload) {
@@ -466,7 +561,7 @@ async function api(payload) {
 }
 function setSync(text) { const el = $('#sync'); if (el) el.textContent = text; }
 function applyLoad(j) {
-  state.year = j.year; state.settings = j.settings; state.roster = j.roster; state.data = j.data; state.loaded = true;
+  state.year = j.year; state.settings = j.settings; state.roster = j.roster; state.achievements = j.achievements || []; state.data = j.data; state.loaded = true;
   store.set('dv-year', j.year);
 }
 async function loadYear(year, quiet) {
@@ -509,20 +604,33 @@ function signOut() { store.del('dv-key'); location.reload(); }
 /* ---------------- Rendering ---------------- */
 function render() {
   const s = settingsRow();
-  renderHero(s);
+  const past = isPast(s);
+  if (past) Object.keys(state.edits).forEach(k => { if (!k.startsWith('photos:')) delete state.edits[k]; });
+  renderHero(s, past);
   renderYears();
-  $('#secnav').innerHTML = SECTIONS.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
-  $('#main').innerHTML = SECTIONS.map(x => sectionHTML(x, s)).join('');
+  $('#secnav').hidden = past;
+  $('#secnav').innerHTML = past ? '' : SECTIONS.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
+  $('#main').innerHTML = past ? recapHTML(s) : SECTIONS.map(x => sectionHTML(x, s)).join('');
   const mem = memorialRoster().map(r => 'Soror ' + (r.FullName || r.Name)).join(' · ');
   $('#footer').innerHTML = `<span class="serif">${esc(CONFIG.LINE_NAME)}</span>${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}`
     + (mem ? `<div class="foot-mem">In memory of ${esc(mem)}</div>` : '');
-  loadWeather(s);
+  if (!past) loadWeather(s);
 }
 
-function renderHero(s) {
+// A year is in the past once its dates have passed. Years with no dates recorded count as past
+// when they are earlier than this year, or this year with a later year already being planned.
+function isPast(s) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const end = parseDate(s.EndDate) || parseDate(s.StartDate);
+  if (end) return end < today;
+  const y = +s.Year, cy = today.getFullYear();
+  return y < cy || (y === cy && state.settings.some(x => +x.Year > y));
+}
+
+function renderHero(s, past) {
   const num = s.Number ? `The ${ordinal(s.Number)} Deltaversary` : 'Deltaversary';
-  const where = [s.City, fmtRange(s.StartDate, s.EndDate)].filter(Boolean).join(' · ') || 'Destination & dates to be decided';
-  let count = '';
+  const where = [s.City, fmtRange(s.StartDate, s.EndDate)].filter(Boolean).join(' · ') || (past ? '' : 'Destination & dates to be decided');
+  let count = past ? 'Celebrated' : '';
   const start = parseDate(s.StartDate), end = parseDate(s.EndDate) || start;
   if (start) {
     const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -539,7 +647,7 @@ function renderHero(s) {
     <div class="eyebrow">${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}</div>
     <h1>${esc(CONFIG.LINE_NAME)}</h1>
     <div class="num">${esc(num)}${s.Theme ? ` — ${esc(s.Theme)}` : ''}</div>
-    <div class="where">${esc(where)}</div>
+    ${where ? `<div class="where">${esc(where)}</div>` : ''}
     ${count ? `<div class="count">${esc(count)}</div>` : ''}`;
 }
 
@@ -611,12 +719,209 @@ function sectionHTML(sec, s) {
     case 'travel':
       body = head('Arrivals and departures for everyone marked Attending or Maybe, so we can coordinate rides and pickups.') + listBlock('travel');
       break;
+    case 'achievements':
+      body = head('Delta honors and personal milestones across the line, ready to celebrate when we gather. Anyone can add a Delta honor for a sister; personal achievements are shared by the sister herself.')
+        + achievementsHTML();
+      break;
     case 'memories':
-      body = head('Photos from the weekend, and comments to bring to the next meeting so the next Deltaversary is even better.')
-        + settingsBlock('memories', s) + `<h3 class="sub">Comments for the next meeting</h3>` + listBlock('feedback');
+      body = head('Photos and highlights from the weekend, and comments to bring to the next meeting so the next Deltaversary is even better.')
+        + `<h3 class="sub">Photos</h3>` + galleryHTML()
+        + `<h3 class="sub">Highlights</h3>` + listBlock('highlights')
+        + `<h3 class="sub">Album & notes</h3>` + settingsBlock('memories', s)
+        + `<h3 class="sub">Comments for the next meeting</h3>` + listBlock('feedback');
       break;
   }
   return `<section class="section" id="${sec.id}">${body}</section>`;
+}
+
+/* ----- Achievements ----- */
+function fmtMonth(v) { const m = /^(\d{4})-(\d{2})/.exec(v || ''); return m ? `${MONTHS[+m[2] - 1]} ${m[1]}` : (v || ''); }
+function achYear(a) { return (a.Date || '').slice(0, 4) || (a.StartYear ? String(a.StartYear) : ''); }
+function achIsRole(a) { return !a.Date && !!a.StartYear; }
+function achWhen(a) {
+  if (a.Date) return fmtMonth(a.Date);
+  if (a.StartYear) return `${a.StartYear}–${a.EndYear && !/present/i.test(a.EndYear) ? a.EndYear : 'present'}`;
+  return '';
+}
+function achActiveIn(a, y) {
+  if (!achIsRole(a)) return false;
+  const end = !a.EndYear || /present/i.test(a.EndYear) ? 9999 : +a.EndYear;
+  return +a.StartYear <= y && y <= end;
+}
+function achSortKey(a) { return a.Date || (a.StartYear ? a.StartYear + '-00' : '0000'); }
+// The day after the most recent Deltaversary before the year being viewed.
+function lastDeltaversaryDate() {
+  const prior = state.settings.filter(x => +x.Year < +state.year).sort((a, c) => +c.Year - +a.Year)[0];
+  if (!prior) return '';
+  return prior.EndDate || prior.StartDate || `${prior.Year}-04-24`;
+}
+function achInRange(a) {
+  if (state.ach.range === 'all') return true;
+  const since = lastDeltaversaryDate(); if (!since) return true;
+  if (achIsRole(a)) { const end = !a.EndYear || /present/i.test(a.EndYear) ? 9999 : +a.EndYear; return end >= +since.slice(0, 4); }
+  return (a.Date || '') > since;
+}
+function achievementRows() {
+  return state.achievements
+    .filter(a => a.Scope !== 'Line' && achInRange(a))
+    .filter(a => !state.ach.cat || a.Category === state.ach.cat)
+    .filter(a => !state.ach.soror || a.Soror === state.ach.soror)
+    .sort((a, c) => achSortKey(c).localeCompare(achSortKey(a)) || (a.Title || '').localeCompare(c.Title || ''));
+}
+function achievementProblem(r) {
+  if (r.Scope !== 'Line' && !r.Soror) return 'Please choose the soror this achievement belongs to.';
+  if (r.Category === 'Personal' && r.Scope !== 'Line' && r.AddedBy !== r.Soror) return 'Personal achievements are added by the sister herself. Choose her name under “Who is adding this.”';
+  if (!r.Date && !r.StartYear) return 'Add the month it happened, or the year she started serving.';
+  return '';
+}
+function sororCell(name) {
+  if (!name) return '<span class="dash">—</span>';
+  const p = sororInfo(name);
+  return `${esc(name)}${remembered(p) ? '<span class="mem-tag">In memory</span>' : ''}${lineLabel(p) ? `<div class="meta">${esc(lineLabel(p))}</div>` : ''}`;
+}
+function achBanners(list) {
+  return list.filter(a => a.Scope === 'Line').map(a => `<div class="ach-banner"><div class="eyebrow">${esc(CONFIG.LINE_NAME)} · ${esc(achWhen(a))}</div><div class="ach-title">${esc(a.Title)}</div>${a.Notes ? `<div class="ach-note">${esc(a.Notes)}</div>` : ''}</div>`).join('');
+}
+function achievementsHTML() {
+  const f = state.ach;
+  const since = lastDeltaversaryDate();
+  const banners = f.soror ? '' : achBanners(state.achievements.filter(a => a.Scope === 'Line' && achInRange(a) && (!f.cat || a.Category === f.cat)));
+  const sorors = state.roster.slice().sort((a, c) => lineNum(a.Name) - lineNum(c.Name));
+  const opt = (v, label, cur) => `<option value="${esc(v)}"${v === cur ? ' selected' : ''}>${esc(label)}</option>`;
+  const controls = `<div class="ach-filters">
+    <label>Show <select data-filter="range">${opt('since', since ? 'Since our last Deltaversary' : 'All years', f.range)}${since ? opt('all', 'All years', f.range) : ''}</select></label>
+    <label>Kind <select data-filter="cat">${opt('', 'Delta & personal', f.cat)}${opt('Delta', 'Delta', f.cat)}${opt('Personal', 'Personal', f.cat)}</select></label>
+    <label>Soror <select data-filter="soror">${opt('', 'Whole line', f.soror)}${sorors.map(p => opt(p.Name, p.Name, f.soror)).join('')}</select></label>
+  </div>`;
+  let profile = '';
+  if (f.soror) {
+    const p = sororInfo(f.soror);
+    const roles = state.achievements.filter(a => a.Soror === f.soror && achIsRole(a) && achActiveIn(a, new Date().getFullYear()));
+    profile = `<div class="ach-profile"><div class="ach-name">Soror ${esc(p.FullName || f.soror)}${remembered(p) ? '<span class="mem-tag">In memory</span>' : ''}</div>
+      <div class="meta">${esc(lineLabel(p))}</div>
+      ${roles.length ? `<div class="ach-roles">${roles.map(a => `<span class="rc-chip">${esc([a.Role, a.Title].filter(Boolean).join(', '))}</span>`).join('')}</div>` : ''}</div>`;
+  }
+  BLOCKS.achievements.emptyText = () => f.range === 'since' && since
+    ? `Nothing recorded since ${fmtDate(since, true).split(', ')[1]}, ${since.slice(0, 4)} yet. Choose “All years” to see everything.`
+    : 'No achievements recorded yet.';
+  return controls + banners + profile + listBlock('achievements');
+}
+
+/* ----- Photo gallery (files live in the organizer's Google Drive) ----- */
+const photoSrc = (id, w) => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
+function galleryHTML() {
+  const rows = (state.data.Photos || []).slice().sort((a, b) => (+a.Order || 0) - (+b.Order || 0));
+  const editing = rows.map(r => `photos:${r.id}`).find(k => state.edits[k]);
+  let html = rows.length
+    ? `<div class="gallery">${rows.map((r, i) => `<figure class="ph">
+        <button class="ph-img" data-act="zoom" data-i="${i}" aria-label="Open photo${r.Caption ? ': ' + esc(r.Caption) : ''}"><img src="${esc(photoSrc(r.FileId, 900))}" alt="${esc(r.Caption || 'Deltaversary photo')}" loading="lazy"></button>
+        <figcaption>${r.Caption ? esc(r.Caption) : '<span class="dash">No caption</span>'}
+          <span class="ph-acts"><button class="link-btn" data-act="edit" data-b="photos" data-id="${esc(r.id)}">Caption</button><button class="link-btn danger" data-act="del" data-b="photos" data-id="${esc(r.id)}">Remove</button></span>
+        </figcaption></figure>`).join('')}</div>`
+    : `<div class="empty">No photos yet. About six favorites per year looks best.</div>`;
+  if (editing) { const r = rows.find(x => `photos:${x.id}` === editing); html += editorHTML(editing, BLOCKS.photos.fields, state.edits[editing], 'Photo caption', false); }
+  html += `<div class="add-row"><button class="btn ghost" data-act="upload">+ Add photos</button><span class="up-status" id="up-status"></span></div>`;
+  return html;
+}
+
+function resizeImage(file, max) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * scale); c.height = Math.round(img.naturalHeight * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.86));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error(`Couldn’t read ${file.name}. Try a JPEG or PNG.`)); };
+    img.src = url;
+  });
+}
+
+async function uploadPhotos(files) {
+  const year = state.year; const list = Array.from(files).filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic)$/i.test(f.name));
+  if (!list.length) return;
+  let done = 0, failed = 0; state.pending++;
+  const status = t => { const el = $('#up-status'); if (el) el.textContent = t; setSync(t); };
+  for (const f of list) {
+    status(`Uploading ${done + failed + 1} of ${list.length}…`);
+    try {
+      const data = await resizeImage(f, 1800);
+      const j = await api({ action: 'uploadPhoto', year, name: f.name.replace(/\.[^.]+$/, '') + '.jpg', data });
+      if (state.year === year) { state.data.Photos = (state.data.Photos || []).concat([j.row]); }
+      done++;
+    } catch (err) { failed++; toast(err.message === 'auth' ? 'Please sign in again.' : `Photo not added: ${err.message}`); }
+  }
+  state.pending--;
+  render();
+  setSync(failed ? `${done} added, ${failed} failed` : `${done} photo${done === 1 ? '' : 's'} added`);
+}
+
+function openLightbox(i) {
+  const rows = (state.data.Photos || []).slice().sort((a, b) => (+a.Order || 0) - (+b.Order || 0));
+  if (!rows.length) return;
+  const n = rows.length; i = (i + n) % n; const r = rows[i];
+  let lb = $('#lightbox');
+  if (!lb) { lb = document.createElement('div'); lb.id = 'lightbox'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); document.body.appendChild(lb); }
+  lb.dataset.i = i;
+  lb.innerHTML = `<button class="lb-x" data-act="lb-close" aria-label="Close">×</button>
+    ${n > 1 ? `<button class="lb-nav prev" data-act="lb-go" data-d="-1" aria-label="Previous">‹</button><button class="lb-nav next" data-act="lb-go" data-d="1" aria-label="Next">›</button>` : ''}
+    <figure><img src="${esc(photoSrc(r.FileId, 2000))}" alt="${esc(r.Caption || 'Deltaversary photo')}"><figcaption>${esc(r.Caption || '')}<span>${i + 1} / ${n}</span></figcaption></figure>`;
+  lb.hidden = false; document.body.style.overflow = 'hidden';
+}
+function closeLightbox() { const lb = $('#lightbox'); if (lb) { lb.hidden = true; lb.innerHTML = ''; } document.body.style.overflow = ''; }
+
+/* ----- Recap card for past years (read-only) ----- */
+function recapHTML(s) {
+  const D = state.data;
+  const meta = (r, keys) => { const m = keys.filter(k => r[k]).map(k => `<span>${esc(r[k])}</span>`).join(''); return m ? `<div class="meta">${m}</div>` : ''; };
+  const block = (title, inner) => inner ? `<div class="rc-block"><h3 class="sub">${esc(title)}</h3>${inner}</div>` : '';
+  const list = items => items.length ? `<ul class="rc-list">${items.join('')}</ul>` : '';
+
+  const itin = blockRows('itinerary');
+  let weekend = '', last = null;
+  itin.forEach(r => {
+    const g = r.Day || '';
+    if (g !== last) { weekend += `<div class="rc-day">${g ? esc(fmtDate(g, true)) : 'Date not recorded'}</div>`; last = g; }
+    weekend += `<div class="rc-ev"><span class="rc-time">${esc(fmtTime(r.Time))}</span><div><div class="rc-name">${esc(r.Event)}${r.Status === 'Skipped' ? ' <span class="badge dim">Skipped</span>' : ''}</div>${meta(r, ['Location', 'Attire', 'Cost', 'Notes'])}</div></div>`;
+  });
+
+  const came = blockRows('attendance').filter(r => r.Status === 'Attending');
+  const partial = s.PartialAttendance === 'Yes';
+  const yearAch = state.achievements.filter(a => achYear(a) === String(state.year) || achActiveIn(a, +state.year));
+  const service = blockRows('service').map(r => `<li><div class="rc-name">${esc(r.Project)}</div>${meta({ When: [fmtDate(r.Date), fmtTime(r.Time)].filter(Boolean).join(' at '), Location: r.Location, Attire: r.Attire }, ['When', 'Location', 'Attire'])}${r.Summary ? `<p class="rc-p">${esc(r.Summary)}</p>` : ''}</li>`);
+  const pair = (rows, a, b) => rows.map(r => `<li><span>${esc(r[a])}</span>${r[b] ? `<span class="rc-who">${esc(r[b])}</span>` : ''}</li>`);
+  const album = safeUrl(s.AlbumLink);
+  const secret = [s.GiftBudget ? `Gift amount: ${s.GiftBudget}` : '', s.ExchangeDate ? `Exchanged ${fmtDate(s.ExchangeDate, true)}` : ''].filter(Boolean);
+  const stay = [s.Lodging, s.Address].filter(Boolean);
+  const stats = [[partial ? 0 : came.length, 'Attended'], [itin.length, 'On the itinerary'], [(D.Service || []).length, 'Service projects']].filter(x => x[0]);
+
+  return `<section class="section recap">
+    <div class="eyebrow">Recap · ${esc(state.year)}</div>
+    <div class="sec-head" style="margin-top:10px"><h2>${esc(s.Number ? `The ${ordinal(s.Number)} Deltaversary` : 'Deltaversary ' + state.year)}</h2></div>
+    <p class="sec-intro">${esc([s.City, fmtRange(s.StartDate, s.EndDate)].filter(Boolean).join(' · ') || 'Celebrated together')}</p>
+    ${stats.length ? `<div class="stats" style="margin:0 0 30px">${stats.map(x => `<div class="stat"><div class="n">${x[0]}</div><div class="l">${x[1]}</div></div>`).join('')}</div>` : ''}
+    ${s.Notes ? `<p class="rc-lead">${esc(s.Notes)}</p>` : ''}
+    <div class="rc-photos">${galleryHTML()}</div>
+    ${(D.Highlights || []).length ? `<div class="rc-block rc-highlights"><h3 class="sub">Highlights</h3><ul>${D.Highlights.map(r => `<li>${esc(r.Text)}</li>`).join('')}</ul></div>` : ''}
+    <div class="recap-grid">
+      <div>${block('The weekend', weekend) || block('The weekend', '<div class="empty">No itinerary was recorded for this year.</div>')}</div>
+      <div>
+        ${block(partial ? 'Who we know came' : 'Who came', came.length ? `<div class="rc-names">${came.map(r => `<span class="rc-chip">${esc(r.Soror)}</span>`).join('')}</div>${partial ? '<p class="rc-p rc-muted">Others may have joined for part of the celebration. Add anyone missing in the Sheet.</p>' : ''}` : '')}
+        ${block('Achievements that year', yearAch.length ? achBanners(yearAch) + list(yearAch.filter(a => a.Scope !== 'Line').map(a => `<li><div class="rc-name">${esc(a.Title)}</div><div class="meta"><span>${esc(a.Soror)}</span>${a.Level ? `<span>${esc(a.Level)}</span>` : ''}<span>${esc(achWhen(a))}</span></div></li>`)) : '')}
+        ${block('Where we stayed', stay.length ? `<div class="rc-name">${esc(stay[0])}</div>${stay[1] ? `<div class="meta">${esc(stay[1])}</div>` : ''}` : '')}
+        ${block('Service & scholarship', list(service))}
+        ${block('Donation sign-up', list(pair(D.Signup || [], 'Item', 'Soror')))}
+        ${block('Secret Soror', secret.length ? `<p class="rc-p">${secret.map(esc).join('<br>')}</p>` : '')}
+        ${block('Games & entertainment', list(pair(D.Games || [], 'Name', 'Soror')))}
+        ${block('What we brought', list(pair(D.Bring || [], 'Item', 'Soror')))}
+        ${block('Rooms', list(pair(D.Rooms || [], 'Room', 'Sorors')))}
+        ${block('Comments for the next meeting', list((D.Feedback || []).map(r => `<li><div class="rc-quote">“${esc(r.Comment)}”</div>${r.Soror ? `<div class="meta">— ${esc(r.Soror)}</div>` : ''}</li>`)))}
+        ${block('Photos', album ? `<a href="${esc(album)}" target="_blank" rel="noopener">Open the shared album ↗</a>` : '')}
+      </div>
+    </div>
+    <p class="rc-note">Past years are kept as a record. Photos can still be added, but other changes go in the Google Sheet.</p>
+  </section>`;
 }
 
 /* ----- Settings blocks (key/value cards) ----- */
@@ -632,12 +937,14 @@ function settingsBlock(name, s) {
       : esc(v).replace(/\n/g, '<br>');
     return `<div class="item${f.full ? ' full' : ''}"><div class="k">${esc(f.label)}</div><div class="v">${shown}</div></div>`;
   }).join('');
-  return `<div class="kv">${items}</div><div class="kv-acts"><button class="link-btn" data-act="edit-set" data-b="${name}">Edit</button></div>`;
+  return `<div class="kv clickable" data-act="edit-set" data-b="${name}" title="Click to edit">${items}</div>
+    <div class="kv-acts"><button class="btn ghost sm" data-act="edit-set" data-b="${name}">Edit details</button></div>`;
 }
 
 /* ----- Lists ----- */
 function blockRows(name) {
   const b = BLOCKS[name];
+  if (b.rowsFn) return b.rowsFn();
   let rows = tabRows(b.tab).slice();
   if (b.fixed) {
     const names = activeRoster();
@@ -683,12 +990,15 @@ function listBlock(name) {
   const cols = b.cols;
   const tmpl = cols.map(c => c.w).join(' ') + ' auto';
   if (!rows.length && !drafts.length) {
-    html += `<div class="empty">${b.fixed === 'attending' ? 'No one is marked Attending or Maybe yet. Update RSVPs in Who’s Coming.' : 'Nothing here yet.'}</div>`;
+    html += `<div class="empty">${b.fixed === 'attending' ? 'No one is marked Attending or Maybe yet. Update RSVPs in Who’s Coming.' : (b.emptyText ? b.emptyText() : 'Nothing here yet.')}</div>`;
   } else if (rows.length) {
     html += `<div class="rows" style="--cols:${tmpl}"><div class="row head">${cols.map(c => `<div>${esc(c.label || labelOf(b, c.k))}</div>`).join('')}<div></div></div>`;
     let lastGroup = null;
     rows.forEach(r => {
-      if (b.groupBy) {
+      if (b.groupFn) {
+        const g = b.groupFn(r);
+        if (g !== lastGroup) { html += `<div class="group-label">${esc(g)}</div>`; lastGroup = g; }
+      } else if (b.groupBy) {
         const g = r[b.groupBy] || '';
         if (g !== lastGroup) { html += `<div class="group-label">${g ? esc(fmtDate(g, true)) : 'Date to be decided'}</div>`; lastGroup = g; }
       }
@@ -711,6 +1021,7 @@ function cellValue(b, c, r) {
   let v = r[c.k];
   if (!v) return '';
   if (f.type === 'date') return esc(fmtDate(v));
+  if (f.type === 'month') return esc(fmtMonth(v));
   if (f.type === 'time') return esc(fmtTime(v));
   if (c.badge) {
     const cls = ['Attending', 'Booked', 'Done', 'Yes'].includes(v) ? 'good' : ['Maybe', 'Planned'].includes(v) ? 'warm' : ['Skipped', 'Not attending', 'No', 'Idea'].includes(v) ? 'dim' : '';
@@ -757,12 +1068,13 @@ function editorHTML(ek, fields, vals, title, isDraft) {
     const v = vals[f.k] == null ? '' : vals[f.k];
     const a = `data-ek="${esc(ek)}" data-k="${f.k}" id="${esc(ek + '-' + f.k)}"`;
     if (f.type === 'textarea') return `<textarea ${a} placeholder="${esc(f.ph || '')}">${esc(v)}</textarea>`;
-    if (f.type === 'select' || f.type === 'soror') {
-      let opts = f.type === 'soror' ? roster.concat(f.group ? ['Group'] : []) : f.options;
+    if (f.type === 'select' || f.type === 'soror' || f.type === 'sororAll') {
+      let opts = f.type === 'soror' ? roster.concat(f.group ? ['Group'] : [])
+        : f.type === 'sororAll' ? state.roster.slice().sort((a, c) => lineNum(a.Name) - lineNum(c.Name)).map(p => p.Name) : f.options;
       if (v && !opts.includes(v)) opts = opts.concat([v]);
-      return `<select ${a}><option value="">${f.type === 'soror' ? 'Choose a soror' : 'Choose…'}</option>${opts.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+      return `<select ${a}><option value="">${f.type === 'soror' || f.type === 'sororAll' ? 'Choose a soror' : 'Choose…'}</option>${opts.map(o => `<option${o === v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
     }
-    const t = f.type === 'date' ? 'date' : f.type === 'time' ? 'time' : f.type === 'url' ? 'url' : 'text';
+    const t = f.type === 'date' ? 'date' : f.type === 'time' ? 'time' : f.type === 'url' ? 'url' : f.type === 'month' ? 'month' : 'text';
     return `<input type="${t}" ${a} value="${esc(v)}" placeholder="${esc(f.ph || '')}">`;
   };
   return `<div class="editor${isDraft ? ' draft' : ''}">
@@ -786,6 +1098,7 @@ function startAdd(name) {
   if (name === 'collections') vals.Paid = 'No';
   if (name === 'itinerary') vals.Status = 'Idea';
   if (name === 'roster') vals.Active = 'Yes';
+  if (name === 'achievements') { vals.Category = 'Delta'; vals.Scope = 'Individual'; if (state.ach.soror) vals.Soror = state.ach.soror; }
   state.edits[`${name}:${id}`] = vals;
   render(); focusEditor(`${name}:${id}`);
 }
@@ -815,7 +1128,13 @@ async function save(ek) {
   }
   const row = Object.assign({}, base, vals, { id });
   Object.keys(row).forEach(k => { if (k.startsWith('__')) delete row[k]; });
-  if (!(name === 'roster')) row.Year = state.year;
+  const blk = BLOCKS[name];
+  if (!(blk && blk.global)) row.Year = state.year;
+  if (name === 'achievements') {
+    const problem = achievementProblem(row);
+    if (problem) { toast(problem); focusEditor(ek); return; }
+    if (row.Scope === 'Line') row.Soror = '';
+  }
   if (name === 'roster' && !row.Active) row.Active = 'Yes';
   const before = tabRows(tab).slice();
   const i = before.findIndex(r => r.id === id);
@@ -837,7 +1156,7 @@ async function save(ek) {
 async function remove(name, id) {
   const b = BLOCKS[name];
   const r = tabRows(b.tab).find(x => x.id === id);
-  const label = r ? (r[b.cols[0].k] || '') : '';
+  const label = r ? (b.cols ? r[b.cols[0].k] : r.Caption) || '' : '';
   if (!confirm(`Remove ${label ? '“' + String(label).slice(0, 60) + '”' : 'this ' + b.noun}?`)) return;
   const before = tabRows(b.tab).slice();
   setTabRows(b.tab, before.filter(x => x.id !== id)); render();
@@ -873,6 +1192,7 @@ async function refresh(quiet) {
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-act]'); if (!t) return;
   const act = t.dataset.act;
+  if (act === 'edit-set' && e.target.closest('a')) return; // let links inside a details card open normally
   if (act === 'edit') startEdit(t.dataset.b, t.dataset.id);
   else if (act === 'add') startAdd(t.dataset.b);
   else if (act === 'edit-set') startEditSettings(t.dataset.b);
@@ -883,14 +1203,32 @@ document.addEventListener('click', e => {
   else if (act === 'newyear') newYear(t.dataset.year);
   else if (act === 'refresh') refresh(false);
   else if (act === 'signout') signOut();
+  else if (act === 'upload') $('#photo-input').click();
+  else if (act === 'zoom') openLightbox(+t.dataset.i);
+  else if (act === 'lb-go') openLightbox(+$('#lightbox').dataset.i + +t.dataset.d);
+  else if (act === 'lb-close') closeLightbox();
 });
 function onField(e) {
   const t = e.target; if (!t.dataset || !t.dataset.ek || !t.dataset.k) return;
   if (state.edits[t.dataset.ek]) state.edits[t.dataset.ek][t.dataset.k] = t.value;
 }
 document.addEventListener('input', onField);
+document.addEventListener('change', e => {
+  const k = e.target.dataset && e.target.dataset.filter; if (!k) return;
+  state.ach[k] = e.target.value; render();
+  const el = $('#achievements'); if (el) el.scrollIntoView({ block: 'start' });
+});
 document.addEventListener('change', onField);
+$('#photo-input').addEventListener('change', e => { const f = e.target.files; if (f && f.length) uploadPhotos(f); e.target.value = ''; });
+document.addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
 document.addEventListener('keydown', e => {
+  const lb = $('#lightbox');
+  if (lb && !lb.hidden) {
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowRight') openLightbox(+lb.dataset.i + 1);
+    else if (e.key === 'ArrowLeft') openLightbox(+lb.dataset.i - 1);
+    return;
+  }
   if (e.key === 'Enter' && e.target.matches('.editor input')) { e.preventDefault(); save(e.target.dataset.ek); }
   if (e.key === 'Escape' && e.target.closest('.editor')) { cancelEdit(e.target.dataset.ek); }
 });
