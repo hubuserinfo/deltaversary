@@ -84,6 +84,9 @@
   .years button.add { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
   .secnav a { flex: none; padding: 11px 12px; font-size: 11px; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .secnav a:hover { color: var(--crimson); }
+  /* Every section link stays visible: wrap onto a second line on wider screens */
+  .secnav { flex-wrap: wrap; justify-content: center; overflow: visible; column-gap: 2px; }
+  .secnav a { padding: 10px 11px; }
 
   /* ---------- Sections ---------- */
   main { max-width: 1180px; margin: 0 auto; padding: 30px 16px 60px; }
@@ -279,7 +282,15 @@
     .acts { justify-content: flex-start; margin-top: 6px; }
     .hero { padding-top: 60px; }
     .hero-tools { left: 16px; right: 16px; justify-content: space-between; }
-    .years { justify-content: flex-start; }
+    .years { justify-content: center; flex-wrap: wrap; overflow: visible; }
+    .years button { padding: 12px 10px 10px; }
+    /* On phones the links scroll sideways; a fade and arrow show there is more */
+    .secnav-wrap { position: relative; }
+    .secnav { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x proximity; padding-right: 40px; }
+    .secnav a { scroll-snap-align: start; }
+    .secnav-wrap::after { content: '›'; position: absolute; right: 0; top: 0; bottom: 0; width: 48px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;
+      font-size: 22px; color: var(--crimson); pointer-events: none; background: linear-gradient(to right, rgba(255, 253, 248, 0), var(--paper) 60%); transition: opacity .2s; }
+    .secnav-wrap.at-end::after { opacity: 0; }
     .stat + .stat { border-left: 0; }
   }
 </style>
@@ -310,7 +321,7 @@
   <header class="hero" id="hero"></header>
   <div class="bar">
     <nav class="years" id="years" aria-label="Year"></nav>
-    <nav class="secnav" id="secnav" aria-label="Sections"></nav>
+    <div class="secnav-wrap" id="secnav-wrap"><nav class="secnav" id="secnav" aria-label="Sections"></nav></div>
   </div>
   <main id="main"></main>
   <footer id="footer"></footer>
@@ -684,6 +695,7 @@ function render() {
   const secs = SECTIONS.filter(x => !x.organizerOnly || (isOrganizer() && (state.data.Requests || []).length));
   $('#secnav').innerHTML = past ? '' : secs.map(x => `<a href="#${x.id}">${esc(x.title)}</a>`).join('');
   $('#main').innerHTML = past ? recapHTML(s) : secs.map(x => sectionHTML(x, s)).join('');
+  requestAnimationFrame(updateNavHint);
   const mem = memorialRoster().map(r => 'Soror ' + (r.FullName || r.Name)).join(' · ');
   $('#footer').innerHTML = `<span class="serif">${esc(CONFIG.LINE_NAME)}</span>${esc(CONFIG.CHAPTER)} · ${esc(CONFIG.LINE_SEASON)}`
     + (mem ? `<div class="foot-mem">In memory of ${esc(mem)}</div>` : '');
@@ -1389,6 +1401,14 @@ document.addEventListener('change', e => {
   const el = $('#achievements'); if (el) el.scrollIntoView({ block: 'start' });
 });
 document.addEventListener('change', onField);
+function updateNavHint() {
+  const n = $('#secnav'); if (!n) return;
+  $('#secnav-wrap').classList.toggle('at-end', n.scrollLeft + n.clientWidth >= n.scrollWidth - 4);
+  const bar = document.querySelector('.bar'); // keep section headings clear of the sticky bar, however tall it is
+  if (bar) document.documentElement.style.scrollPaddingTop = (bar.offsetHeight + 16) + 'px';
+}
+$('#secnav').addEventListener('scroll', updateNavHint, { passive: true });
+window.addEventListener('resize', updateNavHint);
 $('#banner-input').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) uploadBanner(f); e.target.value = ''; });
 $('#photo-input').addEventListener('change', e => { const f = e.target.files; if (f && f.length) uploadPhotos(f); e.target.value = ''; });
 document.addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
