@@ -240,6 +240,11 @@
   .who-btn span { font-family: var(--serif); font-size: 21px; font-weight: 500; }
   .who-btn small { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
   .who-btn:hover, .who-btn:focus-visible { border-color: var(--crimson); background: var(--paper); outline: none; }
+  .org-step { max-width: 340px; margin: 0 auto; }
+  .org-step input { width: 100%; padding: 14px 16px; border: 1px solid var(--line); background: var(--cream); text-align: center; letter-spacing: .06em; }
+  .org-step input:focus { outline: none; border-color: var(--crimson); background: var(--paper); }
+  .org-note { margin: 0 0 16px; color: var(--muted); }
+  .org-step .link-btn { margin-top: 6px; }
   .who-now { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #E5C9BF; }
   .who-now b { font-weight: 500; color: var(--cream); }
   .who-now .link-btn { padding: 0; }
@@ -314,6 +319,13 @@
     <h1>Who's planning?</h1>
     <p class="sub">Choose your name. This device will remember it.</p>
     <div class="who-list" id="who-list"></div>
+    <form class="org-step" id="org-step" hidden autocomplete="off">
+      <p class="org-note" id="org-note"></p>
+      <input type="password" id="org-pass" placeholder="Personal passphrase" aria-label="Personal passphrase" autocomplete="current-password">
+      <button class="btn block" type="submit" id="org-btn">Continue</button>
+      <div class="login-msg" id="org-msg"></div>
+      <button class="link-btn" type="button" data-act="org-back">Not Stacey? Choose another name</button>
+    </form>
   </div>
 </div>
 
@@ -608,7 +620,8 @@ function memorialHTML() {
   const m = memorialRoster(); if (!m.length) return '';
   return `<div class="memoriam"><div class="eyebrow">In Memory Of</div>${m.map(r => `<div class="mem-name">Soror ${esc(r.FullName || r.Name)}</div>${lineLabel(r) ? `<div class="mem-line">${esc(lineLabel(r))}</div>` : ''}`).join('')}</div>`;
 }
-function isOrganizer() { return !!state.me && state.me === CONFIG.ORGANIZER; }
+// The organizer is confirmed by her personal passphrase, which the Sheet checks on every change.
+function isOrganizer() { return !!state.me && state.me === CONFIG.ORGANIZER && state.orgOk; }
 // Can the signed-in soror change this row? (Honor system: the passphrase is shared, the name is chosen.)
 function canEdit(name, r) {
   const b = BLOCKS[name] || {};
@@ -625,7 +638,8 @@ function setTabRows(tab, rows) { if (tab === 'Roster') state.roster = rows; else
 
 /* ---------------- API ---------------- */
 async function api(payload) {
-  const res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(Object.assign({}, payload, { key: state.key, by: state.me })) });
+  const res = await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(Object.assign({}, payload, { key: state.key, by: state.me },
+    state.me === CONFIG.ORGANIZER && state.orgKey ? { orgKey: state.orgKey } : {})) });
   if (!res.ok) throw new Error('Network error (' + res.status + ')');
   const j = await res.json();
   if (!j.ok) throw new Error(j.error || 'Something went wrong');
@@ -666,23 +680,52 @@ async function signIn(key, silent) {
     applyLoad(j);
     $('#login').hidden = true;
     const me = store.get('dv-me');
-    if (me && activeRoster().includes(me)) { state.me = me; showApp(); } else showWho();
+    if (me && activeRoster().includes(me)) choose(me, true); else showWho();
   } catch (err) {
     store.del('dv-key');
     $('#login-msg').textContent = err.message === 'auth' ? 'That passphrase didn’t match. Please try again.' : 'Couldn’t connect: ' + err.message;
   } finally { btn.disabled = false; }
 }
-function signOut() { store.del('dv-key'); location.reload(); }
+function signOut() { store.del('dv-key'); store.del('dv-org'); location.reload(); }
 function showApp() { $('#who').hidden = true; $('#app').hidden = false; render(); }
 function showWho() {
+  $('#org-step').hidden = true; $('#who-list').hidden = false;
   const names = activeRoster().slice().sort((a, b) => lineNum(a) - lineNum(b));
   $('#who-list').innerHTML = names.map(n => `<button class="who-btn" data-act="pick-me" data-name="${esc(n)}"><span>${esc(n)}</span><small>${esc(lineLabel(sororInfo(n)))}</small></button>`).join('');
   $('#app').hidden = true; $('#who').hidden = false;
 }
 function pickMe(name) {
   if (hasUnsaved() && !confirm('You have unsaved changes. Switch anyway?')) return;
-  state.edits = {}; state.me = name; store.set('dv-me', name); showApp(); window.scrollTo({ top: 0 });
+  state.edits = {}; choose(name, false);
 }
+// Everyone else goes straight in. The organizer's name also needs her personal passphrase,
+// which this device remembers after the first time.
+async function choose(name, returning) {
+  state.me = name; state.orgOk = false; state.orgKey = '';
+  if (name !== CONFIG.ORGANIZER) { store.set('dv-me', name); showApp(); if (!returning) window.scrollTo({ top: 0 }); return; }
+  const saved = store.get('dv-org');
+  if (saved && await checkOrganizer(saved)) { store.set('dv-me', name); showApp(); return; }
+  store.del('dv-org'); showOrgStep(saved ? 'Your personal passphrase has changed. Please enter the new one.' : '');
+}
+async function checkOrganizer(k) {
+  state.orgKey = k;
+  try { await api({ action: 'checkOrganizer' }); state.orgOk = true; return true; }
+  catch (err) { state.orgKey = ''; state.orgOk = false; return false; }
+}
+function showOrgStep(msg) {
+  $('#app').hidden = true; $('#who').hidden = false; $('#who-list').hidden = true; $('#org-step').hidden = false;
+  $('#org-note').textContent = `Soror ${CONFIG.ORGANIZER}, please enter your personal passphrase.`;
+  $('#org-msg').textContent = msg || ''; $('#org-pass').value = ''; $('#org-pass').focus();
+}
+$('#org-step').addEventListener('submit', async e => {
+  e.preventDefault();
+  const k = $('#org-pass').value.trim(); if (!k) return;
+  $('#org-btn').disabled = true; $('#org-msg').textContent = 'Checking…';
+  const ok = await checkOrganizer(k);
+  $('#org-btn').disabled = false;
+  if (!ok) { $('#org-msg').textContent = 'That personal passphrase didn’t match.'; return; }
+  store.set('dv-org', k); store.set('dv-me', CONFIG.ORGANIZER); $('#org-msg').textContent = ''; showApp(); window.scrollTo({ top: 0 });
+});
 
 /* ---------------- Rendering ---------------- */
 function render() {
@@ -762,7 +805,7 @@ function renderYears() {
   const years = state.settings.map(s => s.Year).sort();
   const next = years.length ? +years[years.length - 1] + 1 : new Date().getFullYear();
   $('#years').innerHTML = years.map(y => `<button class="${y === state.year ? 'on' : ''}" data-act="year" data-year="${esc(y)}">${esc(y)}</button>`).join('')
-    + `<button class="add" data-act="newyear" data-year="${next}">+ Plan ${next}</button>`;
+    + (isOrganizer() ? `<button class="add" data-act="newyear" data-year="${next}">+ Plan ${next}</button>` : '');
 }
 
 function sectionHTML(sec, s) {
@@ -1330,6 +1373,11 @@ async function markRequestDone(id) {
 function splitKey(ek) { const i = ek.indexOf(':'); return [ek.slice(0, i), ek.slice(i + 1)]; }
 function handleErr(err, prefix) {
   if (err.message === 'auth') { toast('The passphrase has changed. Please sign in again.'); setTimeout(signOut, 1800); return; }
+  if (err.message === 'organizer') {
+    if (state.me === CONFIG.ORGANIZER) { store.del('dv-org'); state.orgOk = false; toast('Please enter your personal passphrase again.'); setTimeout(() => showOrgStep('Your personal passphrase has changed. Please enter the new one.'), 1200); }
+    else toast(`Only Soror ${CONFIG.ORGANIZER} can make that change. Use Request a Change instead.`);
+    return;
+  }
   toast(`${prefix}: ${err.message}`);
 }
 function hasUnsaved() { return Object.keys(state.edits).length > 0; }
@@ -1368,6 +1416,7 @@ document.addEventListener('click', e => {
   else if (act === 'signout') signOut();
   else if (act === 'switch') { if (!hasUnsaved() || confirm('You have unsaved changes. Switch anyway?')) { state.edits = {}; showWho(); } }
   else if (act === 'pick-me') pickMe(t.dataset.name);
+  else if (act === 'org-back') showWho();
   else if (act === 'request') startAdd('requests', { Section: t.dataset.section });
   else if (act === 'req-done') markRequestDone(t.dataset.id);
   else if (act === 'banner') $('#banner-input').click();
