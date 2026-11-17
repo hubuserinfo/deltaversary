@@ -1,0 +1,14 @@
+{
+  "name": "4x4 Perfect Timing · Deltaversary",
+  "short_name": "Deltaversary",
+  "description": "Our line's Deltaversary plans, memories and milestones.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#6B1121",
+  "theme_color": "#6B1121",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
